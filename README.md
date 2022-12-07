@@ -1,0 +1,1 @@
+Allows the creation of a custom report
