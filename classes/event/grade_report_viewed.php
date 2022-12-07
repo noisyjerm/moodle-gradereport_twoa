@@ -24,8 +24,6 @@
 
 namespace gradereport_twoa\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * User report viewed event class.
  *

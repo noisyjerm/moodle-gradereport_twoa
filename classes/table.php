@@ -16,6 +16,8 @@
 
 namespace gradereport_twoa;
 
+defined('MOODLE_INTERNAL') || die();
+
 // Load tablelib because this is not autoloaded.
 require_once("{$CFG->libdir}/tablelib.php");
 
@@ -89,7 +91,7 @@ class table extends \table_sql {
             $this->no_sorting($fieldtonotsort);
         }
 
-        // Set the base url as per the constructor
+        // Set the base url as per the constructor.
         $this->define_baseurl($baseurl);
 
         // Is this table downloadable?
@@ -106,7 +108,7 @@ class table extends \table_sql {
 
         // Get the formats that this report can not be exported as from the plugin settings.
         if ($excludedformatexports = get_config('gradereport_twoa', 'excluded_dataformats')) {
-            $this->excludedexportformats = explode(',',$excludedformatexports);
+            $this->excludedexportformats = explode(',', $excludedformatexports);
         }
     }
 
@@ -173,7 +175,7 @@ class table extends \table_sql {
      * @param $value
      * @return mixed
      */
-    public function col_course($value){
+    public function col_course($value) {
         return $this->gradeinfo->get_user_grade_info($value->userid, 'gradeitemname');
     }
 

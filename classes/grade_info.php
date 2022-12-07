@@ -156,7 +156,7 @@ class grade_info {
 
         switch ($this->gradeitem->gradetype) {
             case GRADE_TYPE_NONE:
-                continue;
+                break;
 
             case GRADE_TYPE_VALUE:
                 $item->scaleid = 0;

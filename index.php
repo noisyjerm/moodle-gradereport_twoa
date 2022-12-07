@@ -25,7 +25,6 @@
 require_once('../../../config.php');
 require_once($CFG->dirroot.'/lib/gradelib.php');
 require_once($CFG->dirroot.'/grade/lib.php');
-require_once($CFG->dirroot.'/grade/report/singleview/lib.php');
 
 // Include the locallib for this plugin.
 require_once(dirname(__FILE__).'/locallib.php');
@@ -94,17 +93,21 @@ if (!$course = $DB->get_record('course', $courseparams)) {
         $redirectto = new \moodle_url('/grade/report/twoa/index.php', array('id' => $lastcourseid));
 
         // We have found where they came from so lets send them back.
-        print_error('nocourseid', '', $redirectto);
+        throw new moodle_exception('nocourseid', 'gradereport_twoa', $redirectto);
     }
 
     // We can't find where they came from so just send them where ever this goes.
-    print_error('nocourseid');
+    throw new moodle_exception('nocourseid');
+}
+
+if ($course->id === get_site()->id) {
+    throw new moodle_exception('sitecourse');
 }
 
 // Check that the grade item exists. Throw an error if it doesn't.
 if (!empty($itemid)) {
     if (!$gradeitem = $DB->get_record('grade_items', array('id' => $itemid, 'courseid' => $courseid, 'itemtype' => 'category'))) {
-        print_error('nogradeitem', '', $redirectto);
+        throw new moodle_exception('nogradeitem', 'gradereport_twoa', $redirectto);
     }
 }
 

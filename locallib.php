@@ -43,7 +43,7 @@ function gradereport_twoa_print_error($courseid, $langstringidentifier = '', \mo
     print_grade_page_head($courseid, 'report', 'twoa', '');
 
     // Output an error and return the user to the TWOA report.
-    print_error('courseconfigurationerror', 'gradereport_twoa', $redirectto, $a);
+    throw new moodle_exception('courseconfigurationerror', 'gradereport_twoa', $redirectto, $a);
 }
 
 /**
@@ -56,16 +56,6 @@ function gradereport_twoa_print_error($courseid, $langstringidentifier = '', \mo
  */
 function gradereport_twoa_get_enrolled_users($courseid = 0) {
     global $DB;
-
-    // Todo: Error handling when the courseid is not given.
-    if (empty($courseid)) {
-
-    }
-
-    // Todo: Error handling when the courseid is the site id.
-    if ($courseid == SITEID) {
-
-    }
 
     // An array to hold the user ids in.
     $userids = array();
