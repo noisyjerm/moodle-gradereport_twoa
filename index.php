@@ -225,7 +225,11 @@ $singleselecturl = new \moodle_url("{$CFG->wwwroot}/grade/report/twoa/index.php"
 // Make a cool select that reloads automatically.
 $select = new \single_select($singleselecturl, 'itemid', $selectoptions, '', $defaultselectoption);
 
-print_grade_page_head($course->id, 'report', 'twoa', $reportpagehead);
+$actionbar = new \core_grades\output\general_action_bar($context, new moodle_url('/grade/report/twoa/index.php',
+    ['id' => $courseid]), 'report', 'twoa');
+
+print_grade_page_head($course->id, 'report', 'twoa', $reportpagehead, false, '',
+    true,null, null, $report->screen->item,$actionbar);
 
 // Setup the parameters required to use the single select class.
 $selectoptions = array();
