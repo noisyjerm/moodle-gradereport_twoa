@@ -17,13 +17,13 @@
 /**
  * A file to test things i.e. logic for the TWOA grade report plugin.
  *
- * @package     gradereport
+ * @package     gradereport_twoa
  * @subpackage  twoa
  * @copyright   2016, LearningWorks <admin@learningworks.co.nz>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(CLI_SCRIPT, true);
+define('CLI_SCRIPT', true);
 
 require_once(dirname(dirname(dirname(dirname(dirname(__FILE__))))).'/config.php');
 
@@ -35,8 +35,11 @@ $gradeitemid = 13;
 
 $x = new \gradereport_twoa\grade_info($courseid, $gradeitemid);
 
-$gradedetails = $x->get_user_grades();
+$gradedetails = $x->get_user_grade_info();
 
 foreach ($gradedetails->grades as $grade) {
-    print_object($grade);die;
+    foreach ($grade as $prop => $val) {
+        echo " [" . $prop . "] = " .$val . "\n";
+    }
+    die;
 }

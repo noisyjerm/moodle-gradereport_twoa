@@ -120,7 +120,7 @@ class table extends \table_sql {
      * has been output then we re enable these. This is done so that we don't interfere with any other plugin that needs
      * those export options.
      *
-     * @param $pagesize
+     * @param integer $pagesize
      * @param bool $useinitialsbar
      * @param string $downloadhelpbutton
      * @return void
@@ -160,7 +160,7 @@ class table extends \table_sql {
      *
      * From the grade_info object return the users email address for the given userid.
      *
-     * @param $value
+     * @param object $value
      * @return mixed
      */
     public function col_email($value) {
@@ -172,7 +172,7 @@ class table extends \table_sql {
      *
      * From the grade_info object return the users fullname for the given userid.
      *
-     * @param $value
+     * @param object $value
      * @return mixed
      */
     public function col_course($value) {
@@ -184,7 +184,7 @@ class table extends \table_sql {
      *
      * From the grade_info object return the final grade value for the given userid.
      *
-     * @param $value
+     * @param object $value
      * @return mixed
      */
     public function col_grade($value) {
@@ -196,7 +196,7 @@ class table extends \table_sql {
      *
      * From the grade_info object return the time graded value for the given userid.
      *
-     * @param $value
+     * @param object $value
      * @return mixed
      */
     public function col_dategraded($value) {

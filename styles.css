@@ -16,14 +16,14 @@
     text-align: left;
 }
 
-.path-grade-report-twoa div.singleselect+div.singleselect select,
+.path-grade-report-twoa div.singleselect + div.singleselect select,
 .path-grade-report-twoa div.groupselector select {
-    margin-right: 0px;
+    margin-right: 0;
 }
-dir-rtl.path-grade-report-twoa div.singleselect+div.singleselect select,
-dir-rtl.path-grade-report-twoa div.groupselector select {
+.dir-rtl.path-grade-report-twoa div.singleselect + div.singleselect select,
+.dir-rtl.path-grade-report-twoa div.groupselector select {
     margin-right: 10px;
-    margin-left: 0px;
+    margin-left: 0;
 }
 
 .path-grade-report-twoa div.reporttable div.singleselect form div {
@@ -64,17 +64,17 @@ dir-rtl.path-grade-report-twoa div.groupselector select {
     display: inline;
     margin-bottom: 0.5em;
 }
-.path-grade-report-twoa itemnav.previtem {
-    float:left;
+.path-grade-report-twoa .itemnav.previtem {
+    float: left;
 }
 .path-grade-report-twoa.dir-rtl div.previtem {
-    float:right;
+    float: right;
 }
 .path-grade-report-twoa div.nextitem {
-    float:right;
+    float: right;
 }
 .path-grade-report-twoa.dir-rtl div.nextitem {
-    float:left;
+    float: left;
 }
 .path-grade-report-twoa .reporttable {
     width: 100%;

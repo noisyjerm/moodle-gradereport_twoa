@@ -17,7 +17,7 @@
 /**
  * TWOA report viewed event.
  *
- * @package     gradereport_twoa\event
+ * @package     gradereport_twoa
  * @copyright   2016, LearningWorks <admin@learningworks.co.nz>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +27,7 @@ namespace gradereport_twoa\event;
 /**
  * User report viewed event class.
  *
- * @package     gradereport_twoa\event
+ * @package     gradereport_twoa
  * @copyright   2016, LearningWorks <admin@learningworks.co.nz>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

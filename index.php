@@ -229,7 +229,7 @@ $actionbar = new \core_grades\output\general_action_bar($context, new moodle_url
     ['id' => $courseid]), 'report', 'twoa');
 
 print_grade_page_head($course->id, 'report', 'twoa', $reportpagehead, false, '',
-    true,null, null, $report->screen->item,$actionbar);
+    true, null, null, $report->screen->item, $actionbar);
 
 // Setup the parameters required to use the single select class.
 $selectoptions = array();
