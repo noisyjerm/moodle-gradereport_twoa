@@ -49,7 +49,19 @@ $sqlparams  = array('itemid' => $itemid);
 $columns = array('email', 'course', 'grade', 'dategraded');
 
 // Define the titles of columns to show in header.
-$headers = array('Email', 'Course', 'Grade', 'Date Graded');
+$headers = [];
+foreach ($columns as $column) {
+    $headers[] = get_string('colheader_' . $column, 'gradereport_twoa');
+}
+
+$optionals = get_config('gradereport_twoa', 'optional_columns');
+$optionals = $optionals ? explode(',', $optionals) : [];
+$optionalheaders = [];
+foreach ($optionals as $optional) {
+    array_unshift($columns, $optional);
+    array_unshift($headers, get_string('colheader_' . $optional, 'gradereport_twoa'));
+}
+
 
 // Define the fields that will not be sorted.
 $nosorting = array('email');

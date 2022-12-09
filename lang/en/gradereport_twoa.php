@@ -70,3 +70,14 @@ $string['settings:excluded_dataformats/heading_description'] =
 $string['settings:excluded_dataformats/checkbox_heading']       = 'Excluded data formats';
 $string['settings:excluded_dataformats/checkbox_description']   =
     'Select all of the formats that the reports can NOT be exported as.';
+
+// Strings for the optional columns to show (config check box).
+$string['settings:optional_columns/checkbox_heading']       = 'Additional columns';
+$string['settings:optional_columns/checkbox_description']   =
+    'Select any extra columns you would like included.';
+
+$string['colheader_email'] = "Email";
+$string['colheader_course'] = "Course";
+$string['colheader_grade'] = "Grade";
+$string['colheader_dategraded'] = "Date Graded";
+$string['colheader_fullname'] = "Tauira's Fullname";
