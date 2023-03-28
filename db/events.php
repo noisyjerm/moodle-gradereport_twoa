@@ -15,15 +15,21 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details for the TWOA grade report.
+ * Event observers.
  *
- * @package     gradereport_twoa
- * @copyright   2016, LearningWorks <admin@learningworks.co.nz>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package gradereport_twoa
+ * @author Jeremy FitzPatrick
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @copyright (C) 2023 onwards Te Wānanga o Aotearoa
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2023032207;            // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022041900;            // Requires this Moodle version.
-$plugin->component = 'gradereport_twoa';    // Full name of the plugin (used for diagnostics).
+$observers = [
+    [
+        'eventname' => '\core\event\user_graded',
+        'callback' => '\gradereport_twoa\observers::handle_user_graded',
+        'priority' => 200,
+        'internal' => false,
+    ],
+];

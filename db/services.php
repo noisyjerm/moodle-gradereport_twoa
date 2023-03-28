@@ -15,15 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details for the TWOA grade report.
+ * Web services for TWOA grade report.
  *
- * @package     gradereport_twoa
- * @copyright   2016, LearningWorks <admin@learningworks.co.nz>
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    gradereport_twoa
+ * @copyright  2023 Te Wānanga o Aotearoa
+ * @author     Jeremy FitzPatrick
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2023032207;            // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022041900;            // Requires this Moodle version.
-$plugin->component = 'gradereport_twoa';    // Full name of the plugin (used for diagnostics).
+$functions = array(
+    'gradereport_twoa_getcompletegrades' => array(
+        'classname' => 'gradereport_twoa\external\gradereport_twoa_getcompletegrades',
+        'methodname' => 'get_completegrades',
+        'classpath' => 'grade/report/twoa/classes/external/gradereport_twoa_getcompletegrades.php',
+        'description' => 'Returns a list of grades that are ready to be entered into the SMS',
+        'type' => 'read',
+        'capabilities' => 'gradereport/user:view',
+        'ajax' => false,
+    ),
+);
