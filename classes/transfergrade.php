@@ -73,11 +73,15 @@ class transfergrade {
         $items = $this->get_includeditems();
         $data = (object) [
             'gradeid' => $this->gradeid,
-            'status' => self::STATUS_NOTREADY,
+            'status' => self::STATUS_READY,
             'timemodified' => time(),
         ];
-        if ($this->is_allpassed($items) || $this->is_allattemptsused($items)) {
-            $data->status = self::STATUS_READY;
+
+        foreach ($items as $item) {
+            if (!$this->is_passed($item) && !$this->is_allattemptsused($item)) {
+               $data->status = self::STATUS_NOTREADY;
+                break;
+            }
         }
         // Update the table.
         $record = $DB->get_record('gradereport_twoa', ['gradeid' => $this->gradeid]);
@@ -92,23 +96,18 @@ class transfergrade {
 
     /**
      * Check if all items are passed.
-     * @param array $items
+     * @param \grade_item $item
      * @return bool
      */
-    protected function is_allpassed($items) {
-        $iscomplete = true;
-        foreach ($items as $item) {
-            if (gettype($item) == 'array') {
-                $item = $item['object'];
-            }
-            $grade = \grade_grade::fetch_users_grades($item, [$this->userid]);
-            if ($item->gradepass > $grade[$this->userid]->finalgrade) {
-                $iscomplete = false;
-                break;
-            }
-
+    protected function is_passed($item) {
+        if (gettype($item) == 'array') {
+            $item = $item['object'];
         }
-        return $iscomplete;
+        $grade = \grade_grade::fetch_users_grades($item, [$this->userid]);
+        if ($grade[$this->userid]->finalgrade >= $item->gradepass) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -137,11 +136,22 @@ class transfergrade {
     }
 
     /**
-     * Check if all the attempts are used.
-     * @return false
+     * Check if all the attempts are used for a grade grade
+     * @param \grade_item $item
+     * @return bool
+     * @throws \dml_exception
      */
-    protected function is_allattemptsused() {
-        // Todo: implement this.
+    protected function is_allattemptsused($item) {
+        global $DB;
+        // Todo: implement quiz and others.
+        if ($item->itemmodule === 'assign') {
+            $assign = $DB->get_record('assign', ['id' => $item->iteminstance]);
+
+            $attempts = $DB->count_records('assign_grades', ['assignment' => $item->iteminstance, 'userid' => $this->userid]);
+            if ($assign->maxattempts == $attempts) {
+                return true;
+            }
+        }
         return false;
     }
 

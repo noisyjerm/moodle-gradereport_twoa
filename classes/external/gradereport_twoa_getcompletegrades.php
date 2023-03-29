@@ -87,7 +87,11 @@ class gradereport_twoa_getcompletegrades extends \external_api {
                   AND gt.status " . $eqorin;
         $results = $DB->get_records_sql($query, $params);
 
-        foreach ($results as $result) {
+        foreach ($results as $key => $result) {
+            if (!self::validate_result($result)) {
+                // Todo: log this somewhere.
+                unset($results[$key]);
+            }
             $result->status = \gradereport_twoa\transfergrade::STATUS_SENT;
             $DB->update_record('gradereport_twoa', $result);
             // Strip email.
@@ -123,6 +127,21 @@ class gradereport_twoa_getcompletegrades extends \external_api {
         );
 
         return new \external_single_structure(['grades' => new \external_multiple_structure($grade), 'List of grades']);
+    }
+
+    /**
+     * Check data is populated correctly
+     * @param $result
+     * @return bool
+     */
+    private static function validate_result($result) {
+        if($result->tauiraid == '') {
+            return false;
+        }
+        if($result->classid == '') {
+            return false;
+        }
+        return true;
     }
 
 }
