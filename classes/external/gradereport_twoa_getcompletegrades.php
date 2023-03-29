@@ -135,10 +135,10 @@ class gradereport_twoa_getcompletegrades extends \external_api {
      * @return bool
      */
     private static function validate_result($result) {
-        if($result->tauiraid == '') {
+        if ($result->tauiraid == '') {
             return false;
         }
-        if($result->classid == '') {
+        if ($result->classid == '') {
             return false;
         }
         return true;
