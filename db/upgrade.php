@@ -24,7 +24,8 @@
  */
 
 /**
- * @param $oldversion
+ * Do stuff when upgrading this plugin.
+ * @param int $oldversion
  * @return void
  * @throws coding_exception
  * @throws ddl_exception

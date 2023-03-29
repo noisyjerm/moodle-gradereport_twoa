@@ -30,6 +30,7 @@ namespace gradereport_twoa;
  */
 class observers {
     /**
+     * Handler for user_graded event to determine if grade is considered complete.
      * @param \core\event\user_graded $event
      * @return void
      * @throws \dml_exception
@@ -39,7 +40,7 @@ class observers {
 
         // First find if this is a category with matching ID number.
         $item = \grade_item::fetch(['id' => $itemid]);
-        $pattern = '/[A-Z]{5}\d{3}.*/';
+        $pattern = '/[A-Z]{5}\d{3}\.?\d*/';
         if ($item->is_category_item() && preg_match($pattern, $item->get_idnumber())) {
             $transferitem = new \gradereport_twoa\transfergrade($item, $event->relateduserid, $event->objectid);
             $transferitem->set_gradeready_status();

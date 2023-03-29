@@ -43,7 +43,7 @@ class gradereport_twoa_getcompletegrades extends \external_api {
                     VALUE_OPTIONAL,
                     'last'
                 ),
-                'rangeparam' => new \external_value(PARAM_INT, 'Paramter', VALUE_OPTIONAL, '86400'),
+                'rangeval' => new \external_value(PARAM_INT, 'Paramter', VALUE_OPTIONAL, '86400'),
                 'limit'      => new \external_value(PARAM_INT, 'Maximum number of records per request', VALUE_OPTIONAL),
                 'page'       => new \external_value(PARAM_INT, 'The page number of a paginated request', VALUE_OPTIONAL),
             )
@@ -53,16 +53,16 @@ class gradereport_twoa_getcompletegrades extends \external_api {
     /**
      * Retrieve a set of grades considered ready for adding to SMS
      * @param string $range keyword to describe the subset (last | since | new)
-     * @param integer $rangeparam parameter associated with range (numseconds, unixtime, null)
+     * @param integer $rangeval parameter associated with range (numseconds, unixtime, null)
      * @param integer $limit maximum number of records (not implemented. Todo: implement)
      * @param integer $page page number of record subset (not implemented. Todo: implement)
      * @return array
      */
-    public static function get_completegrades($range = 'last', $rangeparam = 86400, $limit=0, $page=1) {
+    public static function get_completegrades($range = 'last', $rangeval = 86400, $limit=0, $page=1) {
         global $DB;
         // Range options.
         $params = [
-            0 => time() - $rangeparam,
+            0 => time() - $rangeval,
             1 => \gradereport_twoa\transfergrade::STATUS_READY,
             2 => \gradereport_twoa\transfergrade::STATUS_SENT,
         ];
@@ -71,16 +71,17 @@ class gradereport_twoa_getcompletegrades extends \external_api {
             $params[0] = 0;
             $eqorin = '= ?';
         } else if ($range === 'since') {
-            $params[0] = $rangeparam;
+            $params[0] = $rangeval;
         }
 
-        $query = "SELECT gt.*, u.email TauiraID, cat.name ProgCode, c.idnumber ClassID, gi.idnumber CourseCode,
-                         gg.timemodified EventDate, gg.finalgrade Grade, gg.usermodified
+        $query = "SELECT gt.*, u.email TauiraID, cat.idnumber ProgCode, c.idnumber ClassID, gi.idnumber CourseCode,
+                         gg.timemodified EventDate, gg.finalgrade Grade, gi.scaleid, s.scale, gg.usermodified
                   FROM {gradereport_twoa} gt
                   JOIN {grade_grades} gg ON gg.id = gt.gradeid
                   JOIN {grade_items} gi ON gi.id = gg.itemid
+                  LEFT JOIN {scale} s ON s.id = gi.scaleid
                   JOIN {course} c ON c.id = gi.courseid
-                  JOIN {course_categories} cat ON c.category
+                  JOIN {course_categories} cat ON cat.id = c.category
                   JOIN {user} u ON u.id = gg.userid
                   WHERE gt.timemodified >= ?
                   AND gt.status " . $eqorin;
@@ -93,6 +94,11 @@ class gradereport_twoa_getcompletegrades extends \external_api {
             $result->tauiraid = preg_replace('/@.+/', '', $result->tauiraid);
             // Format date.
             $result->eventdate  = date("Y-m-d G:i:s", $result->eventdate);
+            // Get scale value.
+            if (isset($result->scaleid)) {
+                $scale = explode(',', $result->scale);
+                $result->grade = trim($scale[$result->grade - 1]);
+            }
         }
 
         $results = array_values($results);
@@ -110,7 +116,7 @@ class gradereport_twoa_getcompletegrades extends \external_api {
                 'tauiraid' => new \external_value(PARAM_ALPHANUMEXT, 'Email address of student from SMS'),
                 'progcode' => new \external_value(PARAM_ALPHANUMEXT, 'Class code from SMS'),
                 'classid' => new \external_value(PARAM_INT, 'Class id from SMS'),
-                'coursecode' => new \external_value(PARAM_ALPHANUM, 'Grade code in SMS'),
+                'coursecode' => new \external_value(PARAM_RAW, 'Grade code in SMS'),
                 'grade' => new \external_value(PARAM_RAW, 'Grade awarded to the student'),
                 'eventdate' => new \external_value(PARAM_RAW, 'Unix timestamp when grade was last updated'),
             )
