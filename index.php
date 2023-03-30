@@ -46,7 +46,7 @@ $sqlwhere   = 'gg.itemid = :itemid AND gg.finalgrade IS NOT NULL';
 $sqlparams  = array('itemid' => $itemid);
 
 // Define the list of columns to show.
-$columns = array('email', 'course', 'grade', 'dategraded');
+$columns = array('email', 'course', 'grade', 'dategraded', 'action');
 
 // Define the titles of columns to show in header.
 $headers = [];
@@ -90,6 +90,7 @@ $redirectto = new \moodle_url('/grade/report/twoa/index.php', array('id' => $cou
 
 $PAGE->set_url($currentpageurl);
 $PAGE->set_pagelayout('incourse');
+$PAGE->requires->js_call_amd('gradereport_twoa/actions', 'init');
 
 // Ensure that the course exists.
 if (!$course = $DB->get_record('course', $courseparams)) {

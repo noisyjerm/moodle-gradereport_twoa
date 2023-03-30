@@ -74,17 +74,17 @@ class gradereport_twoa_getcompletegrades extends \external_api {
             $params[0] = $rangeval;
         }
 
-        $query = "SELECT gt.*, u.email TauiraID, cat.idnumber ProgCode, c.idnumber ClassID, gi.idnumber CourseCode,
+        $query = "SELECT gt.*, u.email TauiraID, cc.idnumber ProgCode, c.idnumber ClassID, gi.idnumber CourseCode,
                          gg.timemodified EventDate, gg.finalgrade Grade, gi.scaleid, s.scale, gg.usermodified
                   FROM {gradereport_twoa} gt
                   JOIN {grade_grades} gg ON gg.id = gt.gradeid
                   JOIN {grade_items} gi ON gi.id = gg.itemid
                   LEFT JOIN {scale} s ON s.id = gi.scaleid
                   JOIN {course} c ON c.id = gi.courseid
-                  JOIN {course_categories} cat ON cat.id = c.category
+                  JOIN {course_categories} cc ON cc.id = c.category
                   JOIN {user} u ON u.id = gg.userid
                   WHERE gt.timemodified >= ?
-                  AND gt.status " . $eqorin;
+                  AND gt.status $eqorin";
         $results = $DB->get_records_sql($query, $params);
 
         foreach ($results as $key => $result) {

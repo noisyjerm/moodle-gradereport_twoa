@@ -20,6 +20,7 @@ defined('MOODLE_INTERNAL') || die();
 
 // Load tablelib because this is not autoloaded.
 require_once("{$CFG->libdir}/tablelib.php");
+use \html_writer;
 
 /**
  * Class gradereport_twoa_table.
@@ -201,5 +202,34 @@ class table extends \table_sql {
      */
     public function col_dategraded($value) {
         return $this->gradeinfo->get_user_grade_info($value->userid, 'twoatimegraded');
+    }
+
+    /**
+     * Get the HTML for the Actions column.
+     * @param object $value
+     * @return string
+     */
+    public function col_action($value) {
+        $idnumber = $this->gradeinfo->get_item_idnumber();
+        $status = $this->gradeinfo->get_user_grade_info($value->userid, 'transferstatus');
+        $gradeid = $this->gradeinfo->get_user_grade_info($value->userid, 'gradeid');
+        $pattern = '/[A-Z]{5}\d{3}\.?\d*/';
+
+        $attributes = [
+            'type' => 'checkbox',
+            'data-gradeid' => $gradeid,
+            'class' => 'gradetransfer'
+        ];
+        if (!preg_match($pattern, $idnumber) || $status == 2) {
+            $attributes['disabled'] = 'disabled';
+        }
+        if ($status >= 1) {
+            $attributes['checked'] = true;
+        }
+
+        $out = html_writer::tag('label', 'transferred',
+                array('for' => 'status_' . $value->userid, 'class' => 'accesshide'));
+        $out .= html_writer::empty_tag('input', $attributes);
+        return $out;
     }
 }

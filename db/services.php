@@ -35,4 +35,13 @@ $functions = array(
         'capabilities' => 'gradereport/user:view',
         'ajax' => false,
     ),
+    'gradereport_twoa_manualstatus' => array(
+        'classname' => 'gradereport_twoa\external\gradereport_twoa_manualstatus',
+        'methodname' => 'update_transferstatus',
+        'classpath' => 'grade/report/twoa/classes/external/gradereport_twoa_manualstatus.php',
+        'description' => 'Changes the ready status of the grade',
+        'type' => 'write',
+        'capabilities' => 'gradereport/twoa:view',
+        'ajax' => true,
+    ),
 );

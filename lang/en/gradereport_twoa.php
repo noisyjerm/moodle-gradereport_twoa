@@ -81,3 +81,6 @@ $string['colheader_course'] = "Course";
 $string['colheader_grade'] = "Grade";
 $string['colheader_dategraded'] = "Date Graded";
 $string['colheader_fullname'] = "Tauira's Fullname";
+$string['colheader_action'] = "Ready for transfer";
+
+$string['twoa:view'] = "View TWOA grade export report";

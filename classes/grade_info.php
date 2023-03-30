@@ -172,6 +172,13 @@ class grade_info {
 
         // Get the users grades for this grade item.
         $gradegrades = \grade_grade::fetch_users_grades($this->gradeitem, $this->userids, true);
+        $sql = "SELECT gg.userid, gt.status FROM
+                {grade_items} gi
+                JOIN {grade_grades} gg ON gg.itemid = gi.id
+                LEFT JOIN {gradereport_twoa} gt ON gt.gradeid = gg.id
+                WHERE gi.id = ?";
+        $transferedgrades = $DB->get_records_sql($sql, [$this->gradeitemid]);
+
         foreach ($this->userids as $userid) {
             $gradegrades[$userid]->gradeitem =& $this->gradeitem;
 
@@ -192,6 +199,8 @@ class grade_info {
             $grade->usermodified    = $gradegrades[$userid]->usermodified;
             $grade->dategraded      = $gradegrades[$userid]->get_dategraded();
             $grade->datesubmitted   = $gradegrades[$userid]->get_datesubmitted();
+            $grade->transferstatus  = $transferedgrades[$userid]->status;
+            $grade->gradeid         = $gradegrades[$userid]->id;
 
             // Create a text representation of the grade.
             if ($this->gradeitem->needsupdate) {
@@ -284,5 +293,13 @@ class grade_info {
             return $this->usergrades->grades[$userid]->$property;
         }
         return $this->usergrades;
+    }
+
+    /**
+     * Gets the grade category ID Number
+     * @return string
+     */
+    public function get_item_idnumber() {
+        return $this->gradeitem->idnumber;
     }
 }
