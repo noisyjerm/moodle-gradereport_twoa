@@ -27,6 +27,7 @@ $string['pluginname'] = 'TWOA Grade Export Report';
 
 // Strings to give to things that trigger events.
 $string['eventgradereportviewed']   = 'Grade TWOA report viewed.';
+$string['eventgradedataretrieved']   = 'Grade TWOA report data retrieved.';
 
 // String that joins the error messages for no grade items for a course and missing grade category total name.
 $string['courseconfigurationerror'] = '{$a->missingcomponent}. Please contact {$a->contactwho} {$a->contactoptions}'.

@@ -35,6 +35,11 @@ require_once($CFG->dirroot.'/grade/querylib.php');
  */
 class transfergrade {
 
+    /** @var string Regular expression to match the grade category id on */
+    const GRADECAT_PATTERN = '/[A-Z]{5}\d{3}\.?\d*/';
+    /** @var string Regular expression to match the course category on */
+    const COURSECAT_PATTERN = '/[A-Z]{4}\d{3}/';
+
     /** @var int The status cannot be determined. */
     const STATUS_ERROR = -1;
     /** @var int This grade is not considered complete. */

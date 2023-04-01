@@ -59,8 +59,8 @@ function xmldb_gradereport_twoa_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023032207, 'gradereport', 'twoa');
     }
 
-    if ($oldversion < 2023032208) {
+    if ($oldversion < 2023032209) {
         // Savepoint reached.
-        upgrade_plugin_savepoint(true, 2023032208, 'gradereport', 'twoa');
+        upgrade_plugin_savepoint(true, 2023032209, 'gradereport', 'twoa');
     }
 }

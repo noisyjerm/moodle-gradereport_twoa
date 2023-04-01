@@ -86,16 +86,22 @@ class gradereport_twoa_getcompletegrades extends \external_api {
                   WHERE gt.timemodified >= ?
                   AND gt.status $eqorin";
         $results = $DB->get_records_sql($query, $params);
+        $errors = [];
 
         foreach ($results as $key => $result) {
-            if (!self::validate_result($result)) {
-                // Todo: log this somewhere.
+            // Strip email.
+            $result->tauiraid = preg_replace('/@.+/', '', $result->tauiraid);
+            $error = self::validate_result($result);
+            if ($error !== true) {
+                $errors[] = "Grade id $key $error is not valid, ";
+                $result->status = \gradereport_twoa\transfergrade::STATUS_ERROR;
+                $DB->update_record('gradereport_twoa', $result);
                 unset($results[$key]);
+                continue;
             }
             $result->status = \gradereport_twoa\transfergrade::STATUS_SENT;
             $DB->update_record('gradereport_twoa', $result);
-            // Strip email.
-            $result->tauiraid = preg_replace('/@.+/', '', $result->tauiraid);
+
             // Format date.
             $result->eventdate  = date("Y-m-d G:i:s", $result->eventdate);
             // Get scale value.
@@ -104,9 +110,25 @@ class gradereport_twoa_getcompletegrades extends \external_api {
                 $result->grade = trim($scale[$result->grade - 1]);
             }
         }
+        if (empty($errors)) {
+            $errors[] = 'None';
+        }
+
+        $event = \gradereport_twoa\event\grade_data_retrieved::create(
+            array(
+                'context'       => \context_system::instance(),
+                'courseid'      => 0,
+                'relateduserid' => 0,
+                'other'         => ['message' =>
+                                        count($results) . ' results successful, ' . count($errors) . ' results skipped.'
+                ],
+            )
+        );
+
+        $event->trigger();
 
         $results = array_values($results);
-        return ['grades' => $results];
+        return ['grades' => $results, 'errors' => implode(', ', $errors)];
     }
 
     /**
@@ -117,29 +139,51 @@ class gradereport_twoa_getcompletegrades extends \external_api {
 
         $grade = new \external_single_structure(
             array(
-                'tauiraid' => new \external_value(PARAM_ALPHANUMEXT, 'Email address of student from SMS'),
-                'progcode' => new \external_value(PARAM_ALPHANUMEXT, 'Class code from SMS'),
-                'classid' => new \external_value(PARAM_INT, 'Class id from SMS'),
-                'coursecode' => new \external_value(PARAM_RAW, 'Grade code in SMS'),
+                'tauiraid' => new \external_value(PARAM_INT, 'Portion of email address before @ matching student ID from SMS'),
+                'progcode' => new \external_value(PARAM_ALPHANUMEXT, 'ID number of category matching Class code from SMS'),
+                'classid' => new \external_value(PARAM_INT, 'ID number of course matching Class id from SMS'),
+                'coursecode' => new \external_value(PARAM_RAW, 'ID number of category grade item matching Grade code in SMS'),
                 'grade' => new \external_value(PARAM_RAW, 'Grade awarded to the student'),
                 'eventdate' => new \external_value(PARAM_RAW, 'Unix timestamp when grade was last updated'),
             )
         );
 
-        return new \external_single_structure(['grades' => new \external_multiple_structure($grade), 'List of grades']);
+        return new \external_single_structure([
+            'grades' => new \external_multiple_structure($grade), 'List of grades',
+            'errors' => new \external_value(PARAM_RAW, 'Notes of errors', VALUE_OPTIONAL, 'None'),
+        ]);
     }
 
     /**
      * Check data is populated correctly
-     * @param $result
-     * @return bool
+     * @param object $result
+     * @return bool | string
      */
     private static function validate_result($result) {
-        if ($result->tauiraid == '') {
-            return false;
+        if (!is_numeric($result->tauiraid)) {
+            return 'student id ' . $result->tauiraid;
         }
-        if ($result->classid == '') {
-            return false;
+
+        if (!preg_match(\gradereport_twoa\transfergrade::COURSECAT_PATTERN, $result->progcode)) {
+            return 'course category ' . $result->progcode;
+        }
+
+        if (!is_numeric($result->classid)) {
+            return 'course id ' . $result->classid;
+        }
+
+        if (!preg_match(\gradereport_twoa\transfergrade::GRADECAT_PATTERN, $result->coursecode)) {
+            // Shouldn't be able to happen as match is a pre-condition.
+            return 'grade category id ' . $result->coursecode;
+        }
+
+        // Todo: check it.
+        if (empty($result->grade)) {
+            return 'grade ' . $result->grade;
+        }
+        // Todo: check it.
+        if (empty($result->eventdate)) {
+            return 'date ' . $result->eventdate;
         }
         return true;
     }
