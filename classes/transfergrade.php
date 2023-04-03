@@ -36,11 +36,16 @@ require_once($CFG->dirroot.'/grade/querylib.php');
 class transfergrade {
 
     /** @var string Regular expression to match the grade category id on */
-    const GRADECAT_PATTERN = '/[A-Z]{5}\d{3}\.?\d*/';
+    const GRADECAT_PATTERN = '/(W[A-Z]{4}\d{3}|Q\d{5})(\.{1}\d{1,2})?/';
     /** @var string Regular expression to match the course category on */
     const COURSECAT_PATTERN = '/[A-Z]{4}\d{3}/';
 
+    /** @var int A date to ignore results before. */
+    const FROMDATE = 1678014000; // 6 March 2023 NZDST
+
     /** @var int The status cannot be determined. */
+    const STATUS_MISSING = -2;
+    /** @var int The date does not meet the requirements for transferring. */
     const STATUS_ERROR = -1;
     /** @var int This grade is not considered complete. */
     const STATUS_NOTREADY = 0;
@@ -48,6 +53,8 @@ class transfergrade {
     const STATUS_READY = 1;
     /** @var int This grade is considered complete and has been retrieved by API. */
     const STATUS_SENT = 2;
+    /** @var int This grade is has been nodified after being retrieved by API. */
+    const STATUS_MODIFIED = 3;
 
     /** @var grade_item The grade item that has been updated. */
     private $gradeitem;
@@ -93,6 +100,9 @@ class transfergrade {
         if ($record === false) {
             $DB->insert_record('gradereport_twoa', $data);
         } else {
+            if ($record->status == self::STATUS_SENT) {
+                $data->status = self::STATUS_MODIFIED;
+            }
             $data->id = $record->id;
             $DB->update_record('gradereport_twoa', $data);
         }

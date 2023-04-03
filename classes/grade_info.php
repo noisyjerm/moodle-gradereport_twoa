@@ -199,7 +199,9 @@ class grade_info {
             $grade->usermodified    = $gradegrades[$userid]->usermodified;
             $grade->dategraded      = $gradegrades[$userid]->get_dategraded();
             $grade->datesubmitted   = $gradegrades[$userid]->get_datesubmitted();
-            $grade->transferstatus  = $transferedgrades[$userid]->status;
+            $grade->transferstatus  = isset($transferedgrades[$userid])
+                                        ? $transferedgrades[$userid]->status
+                                        : \gradereport_twoa\transfergrade::STATUS_NOTREADY;
             $grade->gradeid         = $gradegrades[$userid]->id;
 
             // Create a text representation of the grade.

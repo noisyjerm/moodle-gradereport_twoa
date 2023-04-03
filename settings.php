@@ -81,4 +81,11 @@ if ($ADMIN->fulltree) {
     foreach ($twoasettings as $twoasetting) {
         $settings->add($twoasetting);
     }
+
 }
+$ADMIN->add("grades", new admin_externalpage(
+    'gradereport_twoa',
+    get_string('pluginname', 'gradereport_twoa'),
+    new moodle_url("/grade/report/twoa/report.php")
+));
+

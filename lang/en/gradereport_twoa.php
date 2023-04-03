@@ -27,7 +27,8 @@ $string['pluginname'] = 'TWOA Grade Export Report';
 
 // Strings to give to things that trigger events.
 $string['eventgradereportviewed']   = 'Grade TWOA report viewed.';
-$string['eventgradedataretrieved']   = 'Grade TWOA report data retrieved.';
+$string['eventgradedataretrieved']  = 'Grade TWOA report data retrieved.';
+$string['eventadminreportviewed']   = 'Grade TWOA admin report viewed.';
 
 // String that joins the error messages for no grade items for a course and missing grade category total name.
 $string['courseconfigurationerror'] = '{$a->missingcomponent}. Please contact {$a->contactwho} {$a->contactoptions}'.
@@ -85,3 +86,21 @@ $string['colheader_fullname'] = "Tauira's Fullname";
 $string['colheader_action'] = "Ready for transfer";
 
 $string['twoa:view'] = "View TWOA grade export report";
+
+$string['status-2'] = 'Missing';
+$string['status-1'] = 'Error';
+$string['status0'] = 'Not ready';
+$string['status1'] = 'Ready';
+$string['status2'] = 'Retrieved';
+$string['status3'] = 'Modified';
+$string['status100'] = 'All';
+
+// Strings for admin report.
+$string['colheader_tauiraid'] = "Tauira ID";
+$string['colheader_progcode'] = "Programme code";
+$string['colheader_coursecode'] = "Konae code";
+$string['colheader_classid'] = "Class ID";
+$string['colheader_eventdate'] = "Date Graded";
+$string['colheader_status'] = "Status";
+$string['adminreport'] = 'Admin report';
+$string['selectdefaultoptiontext:transferstatus'] = 'Select transfer status...';
