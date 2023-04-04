@@ -73,7 +73,7 @@ class gradereport_twoa_getcompletegrades extends \external_api {
         }
 
         $query = "SELECT gt.*, u.email TauiraID, cc.idnumber ProgCode, c.idnumber ClassID, gi.idnumber CourseCode,
-                         gg.timemodified EventDate, gg.finalgrade Grade, gi.scaleid, s.scale, gg.usermodified
+                         gg.timemodified EventDate, gg.finalgrade Grade, gi.grademax, gi.scaleid, s.scale, gg.usermodified
                   FROM {gradereport_twoa} gt
                   JOIN {grade_grades} gg ON gg.id = gt.gradeid
                   JOIN {grade_items} gi ON gi.id = gg.itemid
@@ -109,6 +109,8 @@ class gradereport_twoa_getcompletegrades extends \external_api {
             if (isset($result->scaleid)) {
                 $scale = explode(',', $result->scale);
                 $result->grade = trim($scale[$result->grade - 1]);
+            } else {
+                $result->grade = 100 * $result->grade / $result->grademax;
             }
         }
         if (empty($errors)) {

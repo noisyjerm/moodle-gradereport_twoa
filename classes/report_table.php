@@ -78,7 +78,7 @@ class report_table extends \table_sql {
 
         // Set the sql for this table.
         $sqlfields  = 'gg.id, gg.timemodified EventDate, gg.finalgrade Grade, cc.idnumber ProgCode,
-                       c.id courseid, c.idnumber ClassID, gi.id itemid, gi.idnumber CourseCode, gi.scaleid,
+                       c.id courseid, c.idnumber ClassID, gi.id itemid, gi.idnumber CourseCode, gi.grademax, gi.scaleid,
                        s.scale, gt.status, gt.timemodified, u.email TauiraID';
         $sqlfrom    = '{grade_grades} gg
                   JOIN {grade_items} gi ON gi.id = gg.itemid
@@ -234,10 +234,11 @@ class report_table extends \table_sql {
      * @return mixed
      */
     public function col_grade($value) {
-        $grade = $value->grade;
         if (isset($value->scaleid) && $value->grade > 0) {
             $scale = explode(',', $value->scale);
             $grade = trim($scale[$value->grade - 1]);
+        } else {
+            $grade = 100 * $value->grade / $value->grademax;
         }
         return $grade;
     }
