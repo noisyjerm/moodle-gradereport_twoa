@@ -37,15 +37,12 @@ class gradereport_twoa_getcompletegrades extends \external_api {
     public static function get_completegrades_parameters() {
         return new \external_function_parameters (
             array(
-                'range'      => new \external_value(
-                    PARAM_ALPHA,
-                    'Keyword to describe the subset of results',
-                    VALUE_OPTIONAL,
-                    'last'
-                ),
+                'range'    => new \external_value(PARAM_ALPHA, 'Keyword to describe the subset of results',
+                                                  VALUE_OPTIONAL, 'last'),
                 'rangeval' => new \external_value(PARAM_INT, 'Paramter', VALUE_OPTIONAL, '86400'),
-                'limit'      => new \external_value(PARAM_INT, 'Maximum number of records per request', VALUE_OPTIONAL),
-                'page'       => new \external_value(PARAM_INT, 'The page number of a paginated request', VALUE_OPTIONAL),
+                'limit'    => new \external_value(PARAM_INT, 'Maximum number of records per request', VALUE_OPTIONAL),
+                'page'     => new \external_value(PARAM_INT, 'The page number of a paginated request', VALUE_OPTIONAL),
+                'stealth'  => new \external_value(PARAM_BOOL, 'To mark as sent or not', VALUE_DEFAULT, 0),
             )
         );
     }
@@ -58,8 +55,9 @@ class gradereport_twoa_getcompletegrades extends \external_api {
      * @param integer $page page number of record subset (not implemented. Todo: implement)
      * @return array
      */
-    public static function get_completegrades($range = 'last', $rangeval = 86400, $limit=0, $page=1) {
+    public static function get_completegrades($range = 'last', $rangeval = 86400, $stealth=0, $limit=0, $page=1) {
         global $DB;
+
         // Range options.
         $params = [
             0 => time() - $rangeval,
@@ -99,8 +97,11 @@ class gradereport_twoa_getcompletegrades extends \external_api {
                 unset($results[$key]);
                 continue;
             }
-            $result->status = \gradereport_twoa\transfergrade::STATUS_SENT;
-            $DB->update_record('gradereport_twoa', $result);
+
+            if (!$stealth) {
+                $result->status = \gradereport_twoa\transfergrade::STATUS_SENT;
+                $DB->update_record('gradereport_twoa', $result);
+            }
 
             // Format date.
             $result->eventdate  = date("Y-m-d G:i:s", $result->eventdate);
