@@ -213,7 +213,7 @@ class table extends \table_sql {
         $idnumber = $this->gradeinfo->get_item_idnumber();
         $status = $this->gradeinfo->get_user_grade_info($value->userid, 'transferstatus');
         $gradeid = $this->gradeinfo->get_user_grade_info($value->userid, 'gradeid');
-        $pattern = '/[A-Z]{5}\d{3}\.?\d*/';
+        $pattern = \gradereport_twoa\transfergrade::GRADECAT_PATTERN;
 
         $attributes = [
             'type' => 'checkbox',

@@ -37,8 +37,8 @@ class report_table extends \table_sql {
      * Constructs the TWOA report table with the given parameters.
      *
      * @param string $uniqueid         Some sort of unique id for this table object.
-     * @param array $params            Any parameters that need to be passed to the sql query.
      * @param \moodle_url $baseurl     The url including any query strings. This will help generate urls for paging what is output.
+     * @param array $params            Any parameters that need to be passed to the sql query.
      */
     public function __construct($uniqueid, \moodle_url $baseurl, $params = []) {
         global $CFG;

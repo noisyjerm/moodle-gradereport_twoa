@@ -244,6 +244,13 @@ $actionbar = new \core_grades\output\general_action_bar($context, new moodle_url
 print_grade_page_head($course->id, 'report', 'twoa', $reportpagehead, false, '',
     true, null, null, null, $actionbar);
 
+// Some helpful into to say if this can transfer.
+if (preg_match(\gradereport_twoa\transfergrade::GRADECAT_PATTERN, $gradeitem->idnumber)) {
+    \core\notification::add( get_string('categorysetupok', 'gradereport_twoa'), 'success');
+} else {
+    \core\notification::add( get_string('categorysetupnotok', 'gradereport_twoa'), 'warning');
+}
+
 // Setup the parameters required to use the single select class.
 $selectoptions = array();
 

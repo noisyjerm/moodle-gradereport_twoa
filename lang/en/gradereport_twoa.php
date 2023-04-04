@@ -57,6 +57,8 @@ $string['gradeitem:missingcode'] = 'missing code';
 $string['courseconfigurationerror:errormessage/contactwho']       = 'the Hangarau Service Desk';
 $string['courseconfigurationerror:errormessage/contactoptions']   = '<a href="mailto:hangarau@twoa.ac.nz">by email</a>'.
                                                                    ' or phone 0800 808 789';
+$string['categorysetupok'] = 'This grade category / konae is able to be automatically transfered to 101.';
+$string['categorysetupnotok'] = 'This grade category / konae is not able to be automatically transfered to 101.';
 
 // Strings for the settings page.
 

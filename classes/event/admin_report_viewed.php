@@ -35,7 +35,7 @@ use \core\event\base;
  */
 class admin_report_viewed extends base {
 
-    /** string $reporttype The report type being viewed. */
+    /** @var string $reporttype The report type being viewed. */
     protected $reporttype;
 
     /**
