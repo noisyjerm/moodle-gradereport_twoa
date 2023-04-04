@@ -27,6 +27,7 @@
  *
  * Function call to print an error when the category total name isn't set or a course doens't have any grade categories/items.
  *
+ * @param integer $courseid
  * @param string $langstringidentifier  The TWOA lang string identifier to get the message for the specific error.
  * @param moodle_url $redirectto        The url that the user will be redirected to when they click the continue button.
  */

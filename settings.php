@@ -63,6 +63,20 @@ if ($ADMIN->fulltree) {
         $dataformats
     );
 
+    // Columns that can be optionally included.
+    $optionalcols = [
+        'fullname' => get_string('fullname')
+    ];
+
+    // Put out a bunch of options for columns that can be added.
+    $twoasettings[] = new \admin_setting_configmulticheckbox(
+        'gradereport_twoa/optional_columns',
+        get_string('settings:optional_columns/checkbox_heading', 'gradereport_twoa'),
+        get_string('settings:optional_columns/checkbox_description', 'gradereport_twoa'),
+        array(),
+        $optionalcols
+    );
+
     // Now add the settings for this plugin to the settings object.
     foreach ($twoasettings as $twoasetting) {
         $settings->add($twoasetting);

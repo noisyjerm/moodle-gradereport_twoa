@@ -49,7 +49,19 @@ $sqlparams  = array('itemid' => $itemid);
 $columns = array('email', 'course', 'grade', 'dategraded');
 
 // Define the titles of columns to show in header.
-$headers = array('Email', 'Course', 'Grade', 'Date Graded');
+$headers = [];
+foreach ($columns as $column) {
+    $headers[] = get_string('colheader_' . $column, 'gradereport_twoa');
+}
+
+$optionals = get_config('gradereport_twoa', 'optional_columns');
+$optionals = $optionals ? explode(',', $optionals) : [];
+$optionalheaders = [];
+foreach ($optionals as $optional) {
+    array_unshift($columns, $optional);
+    array_unshift($headers, get_string('colheader_' . $optional, 'gradereport_twoa'));
+}
+
 
 // Define the fields that will not be sorted.
 $nosorting = array('email');
@@ -225,7 +237,11 @@ $singleselecturl = new \moodle_url("{$CFG->wwwroot}/grade/report/twoa/index.php"
 // Make a cool select that reloads automatically.
 $select = new \single_select($singleselecturl, 'itemid', $selectoptions, '', $defaultselectoption);
 
-print_grade_page_head($course->id, 'report', 'twoa', $reportpagehead);
+$actionbar = new \core_grades\output\general_action_bar($context, new moodle_url('/grade/report/twoa/index.php',
+    ['id' => $courseid]), 'report', 'twoa');
+
+print_grade_page_head($course->id, 'report', 'twoa', $reportpagehead, false, '',
+    true, null, null, null, $actionbar);
 
 // Setup the parameters required to use the single select class.
 $selectoptions = array();
