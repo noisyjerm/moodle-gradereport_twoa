@@ -220,7 +220,7 @@ class table extends \table_sql {
             'data-gradeid' => $gradeid,
             'class' => 'gradetransfer'
         ];
-        if (!preg_match($pattern, $idnumber) || $status == 2) {
+        if (!preg_match($pattern, $idnumber) || $status >= \gradereport_twoa\transfergrade::STATUS_SENT) {
             $attributes['disabled'] = 'disabled';
         }
         if ($status >= 1) {
@@ -230,6 +230,12 @@ class table extends \table_sql {
         $out = html_writer::tag('label', 'transferred',
                 array('for' => 'status_' . $value->userid, 'class' => 'accesshide'));
         $out .= html_writer::empty_tag('input', $attributes);
+        if ($status == \gradereport_twoa\transfergrade::STATUS_MODIFIED) {
+            $out .= html_writer::tag('i', '', [
+                'class' => 'modified fa fa-exclamation-triangle',
+                'title' => get_string('warning_modified', 'gradereport_twoa'),
+            ]);
+        }
         return $out;
     }
 }

@@ -86,6 +86,8 @@ $string['colheader_grade'] = "Grade";
 $string['colheader_dategraded'] = "Date Graded";
 $string['colheader_fullname'] = "Tauira's Fullname";
 $string['colheader_action'] = "Ready for transfer";
+$string['warning_modified'] = 'This grade has been modified since being transferred to 101.
+                               Please check 101 to confirm correct result has been recorded.';
 
 $string['twoa:view'] = "View TWOA grade export report";
 

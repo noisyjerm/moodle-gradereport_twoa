@@ -122,3 +122,8 @@
 .dir-rtl.path-grade-report-twoa div.reporttable form .singleview_bulk > div.enable {
     text-align: right;
 }
+
+.path-grade-report-twoa td .modified {
+    padding-left:0.5em;
+    color: orange;
+}
