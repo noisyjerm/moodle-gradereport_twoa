@@ -38,11 +38,11 @@ class gradereport_twoa_getcompletegrades extends \external_api {
         return new \external_function_parameters (
             array(
                 'range'    => new \external_value(PARAM_ALPHA, 'Keyword to describe the subset of results',
-                                                  VALUE_OPTIONAL, 'last'),
-                'rangeval' => new \external_value(PARAM_INT, 'Paramter', VALUE_OPTIONAL, '86400'),
+                    VALUE_DEFAULT, 'last'),
+                'rangeval' => new \external_value(PARAM_INT, 'Paramter', VALUE_DEFAULT, '86400'),
+                'stealth'  => new \external_value(PARAM_BOOL, 'To mark as sent or not', VALUE_DEFAULT, 0),
                 'limit'    => new \external_value(PARAM_INT, 'Maximum number of records per request', VALUE_OPTIONAL),
                 'page'     => new \external_value(PARAM_INT, 'The page number of a paginated request', VALUE_OPTIONAL),
-                'stealth'  => new \external_value(PARAM_BOOL, 'To mark as sent or not', VALUE_DEFAULT, 0),
             )
         );
     }
@@ -51,6 +51,7 @@ class gradereport_twoa_getcompletegrades extends \external_api {
      * Retrieve a set of grades considered ready for adding to SMS
      * @param string $range keyword to describe the subset (last | since | new)
      * @param integer $rangeval parameter associated with range (numseconds, unixtime, null)
+     * @param bool | int $stealth use when testing to not mark the record as sent
      * @param integer $limit maximum number of records (not implemented. Todo: implement)
      * @param integer $page page number of record subset (not implemented. Todo: implement)
      * @return array

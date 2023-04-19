@@ -88,22 +88,19 @@ class report_table extends \table_sql {
                   JOIN {course_categories} cc ON cc.id = c.category
                   JOIN {user} u ON u.id = gg.userid';
         // Build the WHERE.
-        $sqlparams = [];
-        $sqlwhere = "gi.itemtype = 'category'";
-        if ($params['startdate']) {
-            $sqlwhere .= ' AND gt.timemodified >= ?';
-            $sqlparams[] = $params['startdate'];
-        }
-        if ($params['enddate']) {
-            $sqlwhere .= ' AND gt.timemodified <= ?';
-            $sqlparams[] = $params['enddate'];
-        }
-        if ($params['status'] == -2) {
+        $sqlwhere = "gi.itemtype = 'category'
+                     AND gg.timemodified >= ?
+                     AND gg.timemodified <= ?";
+
+        if ($params['status'] == \gradereport_twoa\transfergrade::STATUS_MISSING) {
             $sqlwhere .= ' AND gt.status IS NULL';
         } else if ($params['status'] != 100) {
             $sqlwhere .= ' AND gt.status = ?';
-            $sqlparams[] = $params['status'];
         }
+
+        $sqlparams[] = !isset($params['startdate']) ? get_config('gradereport_twoa', 'report_fromdate') : $params['startdate'];
+        $sqlparams[] = !isset($params['enddate']) ? time() : $params['enddate'];
+        $sqlparams[] = $params['status'];
 
         $this->set_sql($sqlfields, $sqlfrom, $sqlwhere, $sqlparams);
     }

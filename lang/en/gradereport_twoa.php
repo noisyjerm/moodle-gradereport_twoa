@@ -80,6 +80,14 @@ $string['settings:optional_columns/checkbox_heading']       = 'Additional column
 $string['settings:optional_columns/checkbox_description']   =
     'Select any extra columns you would like included.';
 
+// Strings for Admin report settings.
+$string['settings:adminreport/adminreport_description']     = 'Options for the Admin report';
+$string['settings:adminreport/fromdate_heading']            = 'Initial from date';
+$string['settings:adminreport/fromdate_description']        =
+    'Set the date that will be initially selected for the \'From\' filter.<br>
+     Items graded before this date will not appear on the report.
+     This saves seeing a heap of redundant \'missing\' grade results.';
+
 $string['colheader_email'] = "Email";
 $string['colheader_course'] = "Course";
 $string['colheader_grade'] = "Grade";

@@ -30,14 +30,8 @@ require_login();
 $status    = optional_param('status', 100, PARAM_INT);
 $download  = optional_param('download', '', PARAM_ALPHA);
 $perpage   = optional_param('perpage', 100, PARAM_INT);
-$startdate = optional_param('startdate', null, PARAM_INT);
-$enddate   = optional_param('enddate', null, PARAM_INT);
-
-// Set the base url.
-$reportbaseurl = new \moodle_url(
-    "{$CFG->wwwroot}/grade/report/twoa/report.php",
-    array('status' => $status)
-);
+$startdate = optional_param('startdate', get_config('gradereport_twoa', 'report_fromdate'), PARAM_INT);
+$enddate   = optional_param('enddate', time(), PARAM_INT);
 
 // Set the current page url.
 $currentpageurl = new moodle_url('/grade/report/twoa/report.php');
@@ -64,7 +58,7 @@ $reportname = get_string('pluginname', 'gradereport_twoa') . ' - ' .
 
 // Provide some options to filter the returned data set.
 $filters = new \gradereport_twoa\filter_form();
-$filters->set_data(['status' => $status, 'filterstartdate' => 0, 'filterenddate' => 0]);
+$filters->set_data(['status' => $status, 'filterstartdate' => $startdate, 'filterenddate' => 0]);
 if ($filters->is_cancelled()) {
     $redir = $PAGE->url;
     $redir->remove_params(['startdate', 'enddate']);
@@ -79,6 +73,16 @@ if ($dates = $filters->get_data()) {
         $enddate = $dates->filterenddate;
     }
 }
+
+// Set the base url.
+$reportbaseurl = new \moodle_url(
+    "{$CFG->wwwroot}/grade/report/twoa/report.php",
+    array(
+        'status' => $status,
+        'startdate' => $startdate,
+        'enddate' => $enddate
+    )
+);
 
 // Now let's get the report.
 $report = new \gradereport_twoa\report_table('gradeadminreport', $reportbaseurl, [

@@ -41,7 +41,7 @@ class transfergrade {
     const COURSECAT_PATTERN = '/[A-Z]{4}\d{3}/';
 
     /** @var int A date to ignore results before. */
-    const FROMDATE = 1678014000; // 6 March 2023 NZDST
+    const FROMDATE = 1678014000; // Midnight 6 March 2023 NZDST.
 
     /** @var int The status cannot be determined. */
     const STATUS_MISSING = -2;
@@ -159,6 +159,7 @@ class transfergrade {
     protected function is_allattemptsused($item) {
         global $DB;
         // Todo: implement quiz and others.
+        // Todo: error catching.
         if ($item->itemmodule === 'assign') {
             $assign = $DB->get_record('assign', ['id' => $item->iteminstance]);
 

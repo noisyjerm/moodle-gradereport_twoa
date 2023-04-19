@@ -40,7 +40,11 @@ $download = optional_param('download', '', PARAM_ALPHA);
 // Set the components used to construct the report table.
 
 // Set the sql components for set_sql in table_sql class.
-$sqlfields  = 'gg.id, u.id userid, u.firstname, u.lastname, u.email';
+$namefields = \core_user\fields::get_name_fields();
+array_walk($namefields, function(&$val) {
+    $val = 'u.' . $val;
+});
+$sqlfields  = 'gg.id, u.id userid, u.email, ' . implode(',', $namefields);
 $sqlfrom    = '{grade_grades} gg JOIN {user} u ON gg.userid = u.id';
 $sqlwhere   = 'gg.itemid = :itemid AND gg.finalgrade IS NOT NULL';
 $sqlparams  = array('itemid' => $itemid);
@@ -196,7 +200,7 @@ $reportpagehead = get_string('gradereportindex:defaultreporthead', 'gradereport_
 // If there are no enrolled users then show an error.
 if (empty(gradereport_twoa_get_enrolled_users($course->id))) {
     // Generate a link to redirect to the course they came from.
-    gradereport_twoa_print_error($course->id, 'courseconfigurationerror:noenrolledusers', $redirectto);
+    \core\notification::add(get_string('courseconfigurationerror:noenrolledusers', 'gradereport_twoa'), 'error');
 }
 
 // Get the options that should be put into the drop down menu sorted by their sort order.
@@ -245,10 +249,12 @@ print_grade_page_head($course->id, 'report', 'twoa', $reportpagehead, false, '',
     true, null, null, null, $actionbar);
 
 // Some helpful into to say if this can transfer.
-if (preg_match(\gradereport_twoa\transfergrade::GRADECAT_PATTERN, $gradeitem->idnumber)) {
-    \core\notification::add( get_string('categorysetupok', 'gradereport_twoa'), 'success');
-} else {
-    \core\notification::add( get_string('categorysetupnotok', 'gradereport_twoa'), 'warning');
+if (!empty($itemid)) {
+    if (preg_match(\gradereport_twoa\transfergrade::GRADECAT_PATTERN, $gradeitem->idnumber)) {
+        \core\notification::add(get_string('categorysetupok', 'gradereport_twoa'), 'success');
+    } else {
+        \core\notification::add(get_string('categorysetupnotok', 'gradereport_twoa'), 'warning');
+    }
 }
 
 // Setup the parameters required to use the single select class.

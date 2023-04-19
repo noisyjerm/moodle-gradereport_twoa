@@ -59,8 +59,6 @@ class filter_form extends \moodleform {
         $mform->addElement('date_selector', 'filterstartdate', get_string('from'), $opts);
         $mform->addElement('date_selector', 'filterenddate', get_string('to'), $opts);
 
-        $mform->setExpanded('filterheader', false);
-
         // Add the filter/cancel buttons (without 'closeHeaderBefore', so they collapse with the filter).
         $buttonarray = [
             $mform->createElement('submit', 'submitbutton', get_string('filter')),

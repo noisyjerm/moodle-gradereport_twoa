@@ -24,6 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+use \gradereport_twoa\admin_setting_configdatetime;
+
 if ($ADMIN->fulltree) {
     // Put all the settings we want to display on this page in an array and output them at the end in a foreach statement.
     $twoasettings = array();
@@ -77,6 +79,22 @@ if ($ADMIN->fulltree) {
         $optionalcols
     );
 
+    // Admin report options follow.
+    $twoasettings[] = new \admin_setting_heading(
+        'gradereport_twoa/adminreport_options',
+        get_string('adminreport', 'gradereport_twoa'),
+        get_string('settings:adminreport/adminreport_description', 'gradereport_twoa')
+    );
+
+    // We can set a selected date for the From filter
+    // so we don't see heaps of 'missing' grades we don't care about.
+    $twoasettings[] = new admin_setting_configdatetime(
+        'gradereport_twoa/report_fromdate',
+        get_string('settings:adminreport/fromdate_heading', 'gradereport_twoa'),
+        get_string('settings:adminreport/fromdate_description', 'gradereport_twoa'),
+        \gradereport_twoa\transfergrade::FROMDATE
+    );
+
     // Now add the settings for this plugin to the settings object.
     foreach ($twoasettings as $twoasetting) {
         $settings->add($twoasetting);
@@ -88,4 +106,3 @@ $ADMIN->add("grades", new admin_externalpage(
     get_string('pluginname', 'gradereport_twoa'),
     new moodle_url("/grade/report/twoa/report.php")
 ));
-
