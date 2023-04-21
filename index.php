@@ -145,12 +145,12 @@ $reportname = "TWOA_GradeExport_{$course->shortname}_{$gradeitemname}";
 if ($download) {
     // If the grade item category name isn't set then lets get out of here!
     if (empty($gradeitem->itemname)) {
-        gradereport_twoa_print_error($course->id, 'gradecategorytotalname:error/missing', $redirectto);
+        gradereport_twoa_print_error($course->id, $redirectto, 'gradecategorytotalname:error/missing');
     }
 
     // Make our report object.
     $report = new \gradereport_twoa\table(
-        $reportname, $courseid, $itemid, $sqlfields, $sqlfrom, $sqlwhere, $sqlparams, $columns, $headers, $nosorting, $reportbaseurl
+        $reportname, $courseid, $itemid, $reportbaseurl, $sqlfields, $sqlfrom, $sqlwhere, $sqlparams, $columns, $headers, $nosorting
     );
 
     // Tell the report object that we are downloading something.
@@ -175,11 +175,11 @@ grade_regrade_final_grades_if_required($course);
 if (!empty($itemid)) {
     // If the grade items name isn't set then print an error.
     if (empty($gradeitem->itemname)) {
-        gradereport_twoa_print_error($course->id, 'gradecategorytotalname:error/missing', $redirectto);
+        gradereport_twoa_print_error($course->id, $redirectto, 'gradecategorytotalname:error/missing');
     }
 
     $report = new \gradereport_twoa\table(
-        $reportname, $courseid, $itemid, $sqlfields, $sqlfrom, $sqlwhere, $sqlparams, $columns, $headers, $nosorting, $reportbaseurl
+        $reportname, $courseid, $itemid, $reportbaseurl, $sqlfields, $sqlfrom, $sqlwhere, $sqlparams, $columns, $headers, $nosorting
     );
 }
 
@@ -195,7 +195,7 @@ $reportpagehead = get_string('gradereportindex:defaultreporthead', 'gradereport_
 // If there are no enrolled users then show an error.
 if (empty(gradereport_twoa_get_enrolled_users($course->id))) {
     // Generate a link to redirect to the course they came from.
-    gradereport_twoa_print_error($course->id, 'courseconfigurationerror:noenrolledusers', $redirectto);
+    gradereport_twoa_print_error($course->id, $redirectto, 'courseconfigurationerror:noenrolledusers');
 }
 
 // Get the options that should be put into the drop down menu sorted by their sort order.
@@ -203,7 +203,7 @@ $coursegradeitems = $DB->get_records('grade_items', array('itemtype' => 'categor
 
 // If there are no grade items for this course then throw a nice message.
 if (empty($coursegradeitems)) {
-    gradereport_twoa_print_error($course->id, 'gradecategoryitems:error/missing', $redirectto);
+    gradereport_twoa_print_error($course->id, $redirectto, 'gradecategoryitems:error/missing');
 }
 
 // Prepare the options for the drop down. Also set the grade report head string if the itemid isn't empty.

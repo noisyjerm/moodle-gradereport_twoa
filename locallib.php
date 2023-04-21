@@ -31,7 +31,7 @@
  * @param string $langstringidentifier  The TWOA lang string identifier to get the message for the specific error.
  * @param moodle_url $redirectto        The url that the user will be redirected to when they click the continue button.
  */
-function gradereport_twoa_print_error($courseid, $langstringidentifier = '', \moodle_url $redirectto) {
+function gradereport_twoa_print_error($courseid, \moodle_url $redirectto, $langstringidentifier = '') {
     // Just in case we need the grade lib. This is just to use the print_grade_page_head() function.
     require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/grade/lib.php');
 
