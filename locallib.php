@@ -28,10 +28,13 @@
  * Function call to print an error when the category total name isn't set or a course doens't have any grade categories/items.
  *
  * @param integer $courseid
- * @param string $langstringidentifier  The TWOA lang string identifier to get the message for the specific error.
  * @param moodle_url $redirectto        The url that the user will be redirected to when they click the continue button.
+ * @param string $langstringidentifier  The TWOA lang string identifier to get the message for the specific error.
+ * @return mixed
+ * @throws coding_exception
+ * @throws moodle_exception
  */
-function gradereport_twoa_print_error($courseid, $langstringidentifier = '', \moodle_url $redirectto) {
+function gradereport_twoa_print_error($courseid, \moodle_url $redirectto, $langstringidentifier = '') {
     // Just in case we need the grade lib. This is just to use the print_grade_page_head() function.
     require_once(dirname(dirname(dirname(dirname(__FILE__)))).'/grade/lib.php');
 

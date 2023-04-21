@@ -55,6 +55,8 @@ class gradereport_twoa_getcompletegrades extends \external_api {
      * @param integer $limit maximum number of records (not implemented. Todo: implement)
      * @param integer $page page number of record subset (not implemented. Todo: implement)
      * @return array
+     * @throws \coding_exception
+     * @throws \dml_exception
      */
     public static function get_completegrades($range = 'last', $rangeval = 86400, $stealth=0, $limit=0, $page=1) {
         global $DB;

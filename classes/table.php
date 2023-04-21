@@ -53,6 +53,7 @@ class table extends \table_sql {
      * @param string $uniqueid          Some sort of unique id for this table object.
      * @param int $courseid             The id of the course where the grade item is to be pulled from.
      * @param int $itemid               The id of the grade item of type category in the provided course id.
+     * @param \moodle_url $baseurl      The url including any query strings. This will help generate urls for paging what is output.
      * @param string $sqlfields         The table fields to select the users enrolled in the provided course from.
      * @param string $sqlfrom           The tables to select the data from.
      * @param string $sqlwhere          Any conditions that the query needs to meet.
@@ -60,15 +61,14 @@ class table extends \table_sql {
      * @param array $columns            The columns to display on this report.
      * @param array $headers            The titles of the columns for this report.
      * @param array $fieldstonotsort    The columns in $columns to exclude from the fields that can be sorted.
-     * @param \moodle_url $baseurl      The url including any query strings. This will help generate urls for paging what is output.
      * @param bool $isdownloadable      Should this report be downloadable? The default is set to yes.
      * @param bool $iscollapsible       Should this report be collapsible? The default is yes.
      * @param array $showbuttonsat      Where should the download buttons be shown? The default is set to display at the bottom.
      */
-    public function __construct($uniqueid, $courseid, $itemid,
+    public function __construct($uniqueid, $courseid, $itemid, \moodle_url $baseurl,
                                 $sqlfields = '', $sqlfrom = '', $sqlwhere = '', $sqlparams = '',
                                 $columns = array(), $headers = array(), $fieldstonotsort = array(),
-                                \moodle_url $baseurl, $isdownloadable = true, $iscollapsible = false,
+                                $isdownloadable = true, $iscollapsible = false,
                                 $showbuttonsat = array(TABLE_P_BOTTOM)) {
         global $CFG;
 
