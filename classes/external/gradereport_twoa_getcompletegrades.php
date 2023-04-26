@@ -60,6 +60,7 @@ class gradereport_twoa_getcompletegrades extends \external_api {
      */
     public static function get_completegrades($range = 'last', $rangeval = 86400, $stealth=0, $limit=1000, $lastid=0) {
         global $DB;
+        $errors = [];
 
         // Range options.
         $params = [
@@ -75,6 +76,17 @@ class gradereport_twoa_getcompletegrades extends \external_api {
             $params[0] = time() - $rangeval;
         }
 
+        $classes = get_config('gradereport_twoa', 'api_onlytheseclasses');
+        $morewhere = '';
+        if ($classes != '') {
+            // Just a bit of sanitising for extra safety. Ignore if includes anything other than digits, commas and spaces.
+            if (preg_match('/^\d+(\s*,\s*\d+)*$/', $classes) !== 1) {
+                $classes = '0';
+                $errors[] = 'Included classes list has invalid format.';
+            }
+            $morewhere = 'AND c.idnumber IN (' . $classes . ')';
+        }
+
         $query = "SELECT gt.*, u.email TauiraID, cc.idnumber ProgCode, c.idnumber ClassID, gi.idnumber CourseCode,
                          gg.timemodified EventDate, gg.finalgrade Grade, gi.grademax, gi.scaleid, s.scale, gg.usermodified
                   FROM {gradereport_twoa} gt
@@ -86,9 +98,9 @@ class gradereport_twoa_getcompletegrades extends \external_api {
                   JOIN {user} u ON u.id = gg.userid
                   WHERE gt.timemodified >= ?
                   AND gt.status $eqorin
+                  $morewhere
                   ORDER BY gt.timemodified, gt.id ASC";
         $results = $DB->get_records_sql($query, $params);
-        $errors = [];
 
         // Pagination
         // Use SQL to reduce the data set to gte to the timemodified of the last result of the previous 'page',

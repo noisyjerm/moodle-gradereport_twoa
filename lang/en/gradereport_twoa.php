@@ -65,10 +65,10 @@ $string['categorysetupnotok'] = 'This grade category / konae is not able to be a
 // String to display a message at the top of the page.
 $string['settings:heading/messageoftheday']                 = '';
 
-// Strings for the allowed report export formats (heading).
-$string['settings:excluded_dataformats/heading']             = 'Excluded Report Export Formats';
-$string['settings:excluded_dataformats/heading_description'] =
-    'The formats that the TWOA Grade Export Report can NOT be exported as.';
+// Strings for the main 'course' report.
+$string['settings:course_report/heading']             = 'Course report settings';
+$string['settings:course_report/heading_description'] =
+    'Configure how the grade report will display and export.';
 
 // Strings for the allowed report export formats (config check box).
 $string['settings:excluded_dataformats/checkbox_heading']       = 'Excluded data formats';
@@ -87,6 +87,15 @@ $string['settings:adminreport/fromdate_description']        =
     'Set the date that will be initially selected for the \'From\' filter.<br>
      Items graded before this date will not appear on the report.
      This saves seeing a heap of redundant \'missing\' grade results.';
+
+// Strings for the API output.
+$string['settings:api_output/heading']             = 'API settings';
+$string['settings:api_output/heading_description'] = 'Configure what will be included in the API output.';
+$string['settings:api_output/classes']             = 'Classes to include';
+$string['settings:api_output/classes_description'] = 'Enter in a comma separated list of class ids (course idnumbers) for classes that
+                                                      are to be included in the API output, all other classes (courses) will be ignored. <br>
+                                                      Only numbers, commas and spaces allowed. No results will be returned if format is incorrect.<br>
+                                                      If blank, all classes will be included.';
 
 $string['colheader_email'] = "Email";
 $string['colheader_course'] = "Course";

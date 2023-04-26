@@ -35,11 +35,11 @@ if ($ADMIN->fulltree) {
         'gradereport_twoa/heading', '', get_string('settings:heading/messageoftheday', 'gradereport_twoa')
     );
 
-    // Settings for controlling what data formats can be exported.
+    // Settings for the course reports (main grade report).
     $twoasettings[] = new \admin_setting_heading(
-        'gradereport_twoa/excluded_dataformats_heading',
-        get_string('settings:excluded_dataformats/heading', 'gradereport_twoa'),
-        get_string('settings:excluded_dataformats/heading_description', 'gradereport_twoa')
+        'gradereport_twoa/course_report_heading',
+        get_string('settings:course_report/heading', 'gradereport_twoa'),
+        get_string('settings:course_report/heading_description', 'gradereport_twoa')
     );
 
     // Get the dataformats that can be used to export as.
@@ -93,6 +93,21 @@ if ($ADMIN->fulltree) {
         get_string('settings:adminreport/fromdate_heading', 'gradereport_twoa'),
         get_string('settings:adminreport/fromdate_description', 'gradereport_twoa'),
         \gradereport_twoa\transfergrade::FROMDATE
+    );
+
+    // Settings for controlling what data formats can be exported.
+    $twoasettings[] = new \admin_setting_heading(
+        'gradereport_twoa/api_output_heading',
+        get_string('settings:api_output/heading', 'gradereport_twoa'),
+        get_string('settings:api_output/heading_description', 'gradereport_twoa')
+    );
+
+    // List the classes to include.
+    $twoasettings[] = new admin_setting_configtext(
+        'gradereport_twoa/api_onlytheseclasses',
+        get_string('settings:api_output/classes', 'gradereport_twoa'),
+        get_string('settings:api_output/classes_description', 'gradereport_twoa'),
+        ''
     );
 
     // Now add the settings for this plugin to the settings object.
