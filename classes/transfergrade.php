@@ -159,7 +159,10 @@ class transfergrade {
     protected function is_allattemptsused($item) {
         global $DB;
         // Todo: implement quiz and others.
-        // Todo: error catching.
+        // Sometimes we get an array so extract the object.
+        if (is_array($item) && isset($item['object'])) {
+            $item = $item['object'];
+        }
         if ($item->itemmodule === 'assign') {
             $assign = $DB->get_record('assign', ['id' => $item->iteminstance]);
 

@@ -45,3 +45,14 @@ $functions = array(
         'ajax' => true,
     ),
 );
+
+// We define the services to install as pre-built services. A pre-build service is not editable by administrator.
+$services = [
+    'TWOA Grades Export API' => [
+        'functions'         => [
+            'gradereport_twoa_getcompletegrades',
+        ],
+        'restrictedusers'   => 1,
+        'enabled'           => 1,
+    ]
+];
