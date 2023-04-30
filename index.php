@@ -44,7 +44,7 @@ $namefields = \core_user\fields::get_name_fields();
 array_walk($namefields, function(&$val) {
     $val = 'u.' . $val;
 });
-$sqlfields  = 'gg.id, u.id userid, u.email, ' . implode(',', $namefields);
+$sqlfields  = 'gg.id, gg.timemodified dategraded, u.id userid, u.email, ' . implode(',', $namefields);
 $sqlfrom    = '{grade_grades} gg JOIN {user} u ON gg.userid = u.id';
 $sqlwhere   = 'gg.itemid = :itemid AND gg.finalgrade IS NOT NULL';
 $sqlparams  = array('itemid' => $itemid);
@@ -68,7 +68,7 @@ foreach ($optionals as $optional) {
 
 
 // Define the fields that will not be sorted.
-$nosorting = array('email');
+$nosorting = array('course', 'grade', 'action');
 
 $courseparams = array('id' => $courseid);
 

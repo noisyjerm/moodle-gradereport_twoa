@@ -127,3 +127,11 @@
     padding-left: 0.5em;
     color: orange;
 }
+
+.path-grade-report-twoa input.setstatus {
+    margin-right: 1em;
+}
+
+.path-grade-report-twoa table.table-striped tr.selected {
+    background-color: lightblue;
+}

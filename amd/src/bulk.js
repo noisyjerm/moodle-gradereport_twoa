@@ -22,28 +22,26 @@
  */
 
 
-import * as Ajax from 'core/ajax';
-import Notification from 'core/notification';
-
 /**
  * Initialize module
  */
 export const init = () => {
-    document.querySelector('table.twoa_gradeexport').addEventListener('change', updateStatus);
+    document.querySelector('select#menusetstatuses').addEventListener('change', bulkUpdateStatus);
+    document.querySelector('form.updateselected').addEventListener('change', highlightrow);
 };
 
-const updateStatus = (evt) => {
+const highlightrow = (evt) => {
     let el = evt.target;
-    let gradeid = el.dataset.gradeid;
-    // Disable the element.
-    el.disabled = 'disabled';
-    Ajax.call([{
-        methodname: 'gradereport_twoa_manualstatus',
-        args: {'id': gradeid},
-        done: function() {
-            // Enable the element
-            el.disabled = false;
-        },
-        fail: Notification.exception
-    }]);
+    let row = el.closest('tr');
+    if (el.checked) {
+        row.setAttribute('class', 'selected');
+    } else {
+        row.removeAttribute('class');
+    }
+};
+
+const bulkUpdateStatus = (evt) => {
+    let el = evt.target;
+    let form = el.closest('form');
+    form.submit();
 };

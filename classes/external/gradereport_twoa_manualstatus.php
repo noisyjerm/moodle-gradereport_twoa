@@ -70,7 +70,7 @@ class gradereport_twoa_manualstatus extends \external_api {
                 'status' => \gradereport_twoa\transfergrade::STATUS_READY,
                 'timemodified' => time(),
             ];
-            $success = $DB->insert_record('gradereport_twoa', $graderecord);
+            $success = $DB->insert_record('gradereport_twoa', $graderecord, false);
         }
 
         return ['success' => $success];

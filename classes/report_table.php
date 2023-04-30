@@ -109,6 +109,34 @@ class report_table extends \table_sql {
     private $excludedexportformats = array();
 
     /**
+     * Put the table in a form so we can update items.
+     * @return void
+     */
+    public function wrap_html_start() {
+        echo html_writer::start_tag('form', [
+            'name' => 'updateselected',
+            'class' => 'updateselected',
+            'action' => $this->baseurl,
+            'method' => 'post'
+        ]);
+    }
+
+    /**
+     * Add the select and close the form.
+     * @return void
+     * @throws \coding_exception
+     */
+    public function wrap_html_finish() {
+        // Get options for status changer.
+        echo html_writer::span(get_string('transfergradeitemschangestatus', 'gradereport_twoa'));
+        for ($i = \gradereport_twoa\transfergrade::STATUS_ERROR; $i <= \gradereport_twoa\transfergrade::STATUS_MODIFIED; $i++) {
+            $statuses[$i] = get_string('status' . $i, 'gradereport_twoa');
+        }
+        echo html_writer::select($statuses, 'setstatuses');
+        echo html_writer::end_tag('form');
+    }
+
+    /**
      * Overrides parent function to remove unwanted rows.
      * Take the data returned from the db_query and go through all the rows
      * processing each col using either col_{columnname} method or other_cols
@@ -188,7 +216,13 @@ class report_table extends \table_sql {
      * @return false|string
      */
     public function col_tauiraid($value) {
-        $studentid = preg_replace('/@.+/', '', $value->tauiraid);
+        $studentid = html_writer::checkbox(
+            'setstatus[]',
+            $value->id,
+            false,
+            preg_replace('/@.+/', '', $value->tauiraid),
+            ['class' => 'setstatus']
+        );
         return $studentid;
     }
 
@@ -254,6 +288,7 @@ class report_table extends \table_sql {
         if ($value->status >= \gradereport_twoa\transfergrade::STATUS_SENT) {
             $status .= ' (' . date("d/m/Y", $value->timemodified) . ')';
         }
+
         return $status;
     }
 

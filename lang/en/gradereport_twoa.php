@@ -29,6 +29,7 @@ $string['pluginname'] = 'TWOA Grade Export Report';
 $string['eventgradereportviewed']   = 'Grade TWOA report viewed.';
 $string['eventgradedataretrieved']  = 'Grade TWOA report data retrieved.';
 $string['eventadminreportviewed']   = 'Grade TWOA admin report viewed.';
+$string['eventadminreportitemchanged']   = 'Grade TWOA admin report item status changed.';
 
 // String that joins the error messages for no grade items for a course and missing grade category total name.
 $string['courseconfigurationerror'] = '{$a->missingcomponent}. Please contact {$a->contactwho} {$a->contactoptions}'.
@@ -125,3 +126,4 @@ $string['colheader_eventdate'] = "Date Graded";
 $string['colheader_status'] = "Status";
 $string['adminreport'] = 'Admin report';
 $string['selectdefaultoptiontext:transferstatus'] = 'Select transfer status...';
+$string['transfergradeitemschangestatus'] = 'Change the status of selected grades to: ';

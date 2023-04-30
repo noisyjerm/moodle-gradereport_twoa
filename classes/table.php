@@ -74,6 +74,7 @@ class table extends \table_sql {
 
         // Set the id of this table.
         parent::__construct($uniqueid);
+        $this->set_attribute('class', 'generaltable generalbox twoa_gradeexport');
 
         // Set the columns as per the constructor.
         $this->define_columns($columns);

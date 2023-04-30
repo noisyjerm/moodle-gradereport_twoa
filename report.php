@@ -32,6 +32,8 @@ $download  = optional_param('download', '', PARAM_ALPHA);
 $perpage   = optional_param('perpage', 100, PARAM_INT);
 $startdate = optional_param('startdate', get_config('gradereport_twoa', 'report_fromdate'), PARAM_INT);
 $enddate   = optional_param('enddate', time(), PARAM_INT);
+$setstatuses = optional_param('setstatuses', null, PARAM_INT);
+$setstatus = optional_param_array('setstatus', null, PARAM_INT);
 
 // Set the current page url.
 $currentpageurl = new moodle_url('/grade/report/twoa/report.php');
@@ -45,11 +47,47 @@ $PAGE->set_url($currentpageurl);
 $PAGE->set_pagelayout('admin');
 $PAGE->set_title(get_string('pluginname', 'gradereport_twoa'));
 $PAGE->set_heading(get_string('pluginname', 'gradereport_twoa'));
+$PAGE->requires->js_call_amd('gradereport_twoa/bulk', 'init');
 
 // This is the normal requirements.
 require_capability('gradereport/singleview:view', $context);
 require_capability('moodle/grade:viewall', $context);
 require_capability('moodle/grade:edit', $context);
+
+// Update the statuses.
+if (isset($setstatuses)) {
+    foreach ($setstatus as $gradeid) {
+        $graderecord = $DB->get_record('gradereport_twoa', ['gradeid' => $gradeid]);
+        if ($graderecord) {
+            $graderecord->status = $setstatuses;
+            $graderecord->timemodified = time();
+            $success = $DB->update_record('gradereport_twoa', $graderecord);
+        } else {
+            $graderecord = (object)[
+                'gradeid' => $gradeid,
+                'status' => $setstatuses,
+                'timemodified' => time(),
+            ];
+            $success = $DB->insert_record('gradereport_twoa', $graderecord, false);
+        }
+    }
+
+    // Log this change.
+    if ($setstatus !== null) {
+        $event = \gradereport_twoa\event\admin_report_statuschanged::create(
+            array(
+                'context' => $context,
+                'courseid' => 0,
+                'other' => [
+                    'items' => implode(', ', array_values($setstatus)),
+                    'status' => get_string('status' . $setstatuses, 'gradereport_twoa'),
+                ],
+            )
+        );
+        $event->trigger();
+    }
+
+}
 
 // Set the name of the report. This will be the name used for the exported file and the id of the table element.
 $reportname = get_string('pluginname', 'gradereport_twoa') . ' - ' .
@@ -107,7 +145,7 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('adminreport', 'gradereport_twoa'));
 $filters->display();
 // Show the report here.
-$report->out($perpage, true);
+$report->out($perpage, false);
 
 $event = \gradereport_twoa\event\admin_report_viewed::create(
     array(
