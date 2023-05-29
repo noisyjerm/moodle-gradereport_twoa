@@ -268,8 +268,10 @@ class report_table extends \table_sql {
         if (isset($value->scaleid) && $value->grade > 0) {
             $scale = explode(',', $value->scale);
             $grade = trim($scale[$value->grade - 1]);
-        } else {
+        } else if ($value->grademax > 0) {
             $grade = 100 * $value->grade / $value->grademax;
+        } else {
+            $grade = -1;
         }
         return $grade;
     }

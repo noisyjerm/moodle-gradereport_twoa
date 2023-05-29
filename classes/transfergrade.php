@@ -134,19 +134,16 @@ class transfergrade {
         $cat = \grade_category::fetch(['id' => $this->gradeitem->iteminstance]);
         $items = $cat->get_children();
         if (count($items) === 0) {
-            // Todo: test this more. Maybe event does not fire on every category?
-            $items = grade_item::fetch_all(['courseid' => $this->gradeitem->courseid, 'itemtype' => 'mod', 'gradetype' => 1]);
-            foreach ($items as $key => $item) {
-                $cat = \grade_item::fetch([
-                    'courseid' => $this->gradeitem->courseid,
-                    'itemtype' => 'category',
-                    'iteminstance' => $item->categoryid
-                    ]);
-                if ($cat->gradetype == 0) {
-                    unset($items[$key]);
-                }
+            // Extract items from calculation.
+            $calc = $this->gradeitem->calculation;
+            $gipattern = '/(?!##gi)\d+(##)/';
+            preg_match_all($gipattern, $calc, $itemids);
+            foreach ($itemids[0] as $itemid) {
+                $itemid = str_replace('##', '', $itemid);
+                $items[$itemid] = \grade_item::fetch(['id' => $itemid]);
             }
         }
+
         return $items;
     }
 
