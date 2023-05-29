@@ -154,15 +154,14 @@ class report_table extends \table_sql {
         }
 
         foreach ($this->rawdata as $key => $row) {
-            // Throw away results that don't match.
+            $rowclass = $this->get_row_class($row);
+            // Tag results that don't match.
             if (!isset($row->status) &&
                 !preg_match(\gradereport_twoa\transfergrade::GRADECAT_PATTERN, $row->coursecode)) {
-                unset($this->rawdata[$key]);
-                continue;
+                $rowclass .= ' invalid';
             }
             $formattedrow = $this->format_row($row);
-            $this->add_data_keyed($formattedrow,
-                $this->get_row_class($row));
+            $this->add_data_keyed($formattedrow, $rowclass);
         }
     }
 

@@ -132,6 +132,10 @@
     margin-right: 1em;
 }
 
+.path-grade-report-twoa table.table-striped tr.invalid,
+.path-grade-report-twoa table.table-striped tr.invalid a {
+    color: #aaa;
+}
 .path-grade-report-twoa table.table-striped tr.selected {
     background-color: lightblue;
 }

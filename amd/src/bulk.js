@@ -33,10 +33,13 @@ export const init = () => {
 const highlightrow = (evt) => {
     let el = evt.target;
     let row = el.closest('tr');
+    let cssClass = row.getAttribute('class');
     if (el.checked) {
-        row.setAttribute('class', 'selected');
+        cssClass += ' selected';
+        row.setAttribute('class', cssClass);
     } else {
-        row.removeAttribute('class');
+        cssClass = cssClass.replace(' selected', '');
+        row.setAttribute('class', cssClass);
     }
 };
 
