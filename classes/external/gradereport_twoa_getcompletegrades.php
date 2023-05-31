@@ -66,12 +66,13 @@ class gradereport_twoa_getcompletegrades extends \external_api {
         $params = [
             0 => $rangeval,
             1 => \gradereport_twoa\transfergrade::STATUS_READY,
-            2 => \gradereport_twoa\transfergrade::STATUS_SENT,
+            2 => \gradereport_twoa\transfergrade::STATUS_MODIFIED,
+            3 => \gradereport_twoa\transfergrade::STATUS_SENT,
         ];
-        $eqorin = 'IN (?,?)';
+        $eqorin = 'IN (?,?,?)';
         if ($range === 'new') {
             $params[0] = $lastid === 0 ? 0 : $rangeval;
-            $eqorin = '= ?';
+            $eqorin = 'IN (?,?)';
         } else if ($range === 'last' && $lastid === 0) {
             $params[0] = time() - $rangeval;
         }
@@ -139,6 +140,7 @@ class gradereport_twoa_getcompletegrades extends \external_api {
         foreach ($results as $key => $result) {
             // Strip email.
             $result->tauiraid = preg_replace('/@.+/', '', $result->tauiraid);
+            $result->timemodified = time();
             $error = self::validate_result($result);
             if ($error !== true) {
                 $errors[] = "Grade id $key $error is not valid, ";
