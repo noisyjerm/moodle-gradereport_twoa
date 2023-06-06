@@ -90,7 +90,7 @@ class transfergrade {
         ];
 
         foreach ($items as $item) {
-            if (!$this->is_passed($item) && !$this->is_allattemptsused($item)) {
+            if (!$this->is_passed($item)) {
                 $data->status = self::STATUS_NOTREADY;
                 break;
             }
