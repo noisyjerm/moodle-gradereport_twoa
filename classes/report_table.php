@@ -244,7 +244,7 @@ class report_table extends \table_sql {
      */
     public function col_classid($value) {
         $url = new \moodle_url('/grade/edit/tree/index.php', ['id' => $value->courseid]);
-        return html_writer::link($url, $value->classid);
+        return html_writer::link($url, strip_tags($value->classid));
     }
 
     /**

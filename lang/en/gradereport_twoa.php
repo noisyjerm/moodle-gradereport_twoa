@@ -93,9 +93,9 @@ $string['settings:adminreport/fromdate_description']        =
 $string['settings:api_output/heading']             = 'API settings';
 $string['settings:api_output/heading_description'] = 'Configure what will be included in the API output.';
 $string['settings:api_output/classes']             = 'Classes to include';
-$string['settings:api_output/classes_description'] = 'Enter in a comma separated list of class ids (course idnumbers) for classes that
-                                                      are to be included in the API output, all other classes (courses) will be ignored. <br>
-                                                      Only numbers, commas and spaces allowed. No results will be returned if format is incorrect.<br>
+$string['settings:api_output/classes_description'] = 'Limit the courses the api will retrieve by listing them here.
+                                                      Enter the idnumber of each course you want included on its own line.
+                                                      Some characters may be disallowed.<br>
                                                       If blank, all classes will be included.';
 
 $string['colheader_email'] = "Email";

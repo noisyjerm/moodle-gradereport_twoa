@@ -103,11 +103,12 @@ if ($ADMIN->fulltree) {
     );
 
     // List the classes to include.
-    $twoasettings[] = new admin_setting_configtext(
+    $twoasettings[] = new admin_setting_configtextarea(
         'gradereport_twoa/api_onlytheseclasses',
         get_string('settings:api_output/classes', 'gradereport_twoa'),
         get_string('settings:api_output/classes_description', 'gradereport_twoa'),
-        ''
+        '',
+        PARAM_TEXT
     );
 
     // Now add the settings for this plugin to the settings object.

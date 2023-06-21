@@ -83,7 +83,10 @@ class table extends \table_sql {
         $this->define_headers($headers);
 
         // Get the users grade information for this course and grade item.
-        $gradeinfo = new \gradereport_twoa\grade_info($courseid, $itemid);
+
+        $gradeinfo = empty(gradereport_twoa_get_enrolled_users($courseid))
+                     ? new \stdClass()
+                     : new \gradereport_twoa\grade_info($courseid, $itemid);
 
         // Now pass the grade info object that has all the user grade data to this objects propertys.
         $this->gradeinfo = $gradeinfo;

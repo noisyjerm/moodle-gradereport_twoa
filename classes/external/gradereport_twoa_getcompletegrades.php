@@ -69,23 +69,29 @@ class gradereport_twoa_getcompletegrades extends \external_api {
             2 => \gradereport_twoa\transfergrade::STATUS_MODIFIED,
             3 => \gradereport_twoa\transfergrade::STATUS_SENT,
         ];
-        $eqorin = 'IN (?,?,?)';
+        $instatuses = 'IN (?,?,?)';
         if ($range === 'new') {
             $params[0] = $lastid === 0 ? 0 : $rangeval;
-            $eqorin = 'IN (?,?)';
+            $instatuses = 'IN (?,?)';
         } else if ($range === 'last' && $lastid === 0) {
             $params[0] = time() - $rangeval;
         }
 
         $classes = get_config('gradereport_twoa', 'api_onlytheseclasses');
-        $morewhere = '';
+        $andidnumberin = '';
         if ($classes != '') {
-            // Just a bit of sanitising for extra safety. Ignore if includes anything other than digits, commas and spaces.
-            if (preg_match('/^\d+(\s*,\s*\d+)*$/', $classes) !== 1) {
-                $classes = '0';
-                $errors[] = 'Included classes list has invalid format.';
+            // A ? or single quote in the list will mess with the query. Todo: validate the input somehow.
+            if (preg_match('/[\?\']/', $classes) == 1) {
+                $classes = str_replace('?', '%%Q%%', $classes);
+                $classes = str_replace('\'', '%%S%%', $classes);
+                $errors[] = 'Question marks? and single quotes don\'t play nicely here. Please remove them from the classes list.';
             }
-            $morewhere = 'AND c.idnumber IN (' . $classes . ')';
+            // Convert listed items to a string for strict databases like Postgres.
+            $classeslist = preg_split('/\n/', $classes);
+            array_walk($classeslist, function(&$item) {
+                $item = '\'' . trim($item) . '\'';
+            });
+            $andidnumberin = "AND c.idnumber IN (" . implode(',', $classeslist) . ")";
         }
 
         $query = "SELECT gt.*, u.email TauiraID, cc.idnumber ProgCode, c.idnumber ClassID, gi.idnumber CourseCode,
@@ -97,9 +103,9 @@ class gradereport_twoa_getcompletegrades extends \external_api {
                   JOIN {course} c ON c.id = gi.courseid
                   JOIN {course_categories} cc ON cc.id = c.category
                   JOIN {user} u ON u.id = gg.userid
-                  WHERE gt.timemodified >= ?
-                  AND gt.status $eqorin
-                  $morewhere
+                  WHERE gg.timemodified >= ?
+                  AND gt.status $instatuses
+                  $andidnumberin
                   ORDER BY gt.timemodified, gt.id ASC";
         $results = $DB->get_records_sql($query, $params);
 
