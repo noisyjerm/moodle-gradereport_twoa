@@ -52,10 +52,11 @@ class admin_setting_configdatetime extends \admin_setting {
 
         $datearr = getdate($result);
 
-        $data = array(
+        $data = [
                 'y' => $datearr['year'],
                 'M' => $datearr['mon'],
-                'd' => $datearr['mday']);
+                'd' => $datearr['mday'],
+        ];
         return $data;
     }
 

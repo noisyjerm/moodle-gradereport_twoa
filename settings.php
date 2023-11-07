@@ -24,11 +24,11 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-use \gradereport_twoa\admin_setting_configdatetime;
+use gradereport_twoa\admin_setting_configdatetime;
 
 if ($ADMIN->fulltree) {
     // Put all the settings we want to display on this page in an array and output them at the end in a foreach statement.
-    $twoasettings = array();
+    $twoasettings = [];
 
     // Use this as a heading. Set the message of the day lang string to something if you want to display nice welcome message.
     $twoasettings[] = new \admin_setting_heading(
@@ -61,13 +61,13 @@ if ($ADMIN->fulltree) {
         'gradereport_twoa/excluded_dataformats',
         get_string('settings:excluded_dataformats/checkbox_heading', 'gradereport_twoa'),
         get_string('settings:excluded_dataformats/checkbox_description', 'gradereport_twoa'),
-        array(),
+        [],
         $dataformats
     );
 
     // Columns that can be optionally included.
     $optionalcols = [
-        'fullname' => get_string('fullname')
+        'fullname' => get_string('fullname'),
     ];
 
     // Put out a bunch of options for columns that can be added.
@@ -75,7 +75,7 @@ if ($ADMIN->fulltree) {
         'gradereport_twoa/optional_columns',
         get_string('settings:optional_columns/checkbox_heading', 'gradereport_twoa'),
         get_string('settings:optional_columns/checkbox_description', 'gradereport_twoa'),
-        array(),
+        [],
         $optionalcols
     );
 

@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$functions = array(
-    'gradereport_twoa_getcompletegrades' => array(
+$functions = [
+    'gradereport_twoa_getcompletegrades' => [
         'classname' => 'gradereport_twoa\external\gradereport_twoa_getcompletegrades',
         'methodname' => 'get_completegrades',
         'classpath' => 'grade/report/twoa/classes/external/gradereport_twoa_getcompletegrades.php',
@@ -34,8 +34,8 @@ $functions = array(
         'type' => 'read',
         'capabilities' => 'gradereport/user:view',
         'ajax' => false,
-    ),
-    'gradereport_twoa_manualstatus' => array(
+    ],
+    'gradereport_twoa_manualstatus' => [
         'classname' => 'gradereport_twoa\external\gradereport_twoa_manualstatus',
         'methodname' => 'update_transferstatus',
         'classpath' => 'grade/report/twoa/classes/external/gradereport_twoa_manualstatus.php',
@@ -43,8 +43,8 @@ $functions = array(
         'type' => 'write',
         'capabilities' => 'gradereport/twoa:view',
         'ajax' => true,
-    ),
-);
+    ],
+];
 
 // We define the services to install as pre-built services. A pre-build service is not editable by administrator.
 $services = [
@@ -54,5 +54,5 @@ $services = [
         ],
         'restrictedusers'   => 1,
         'enabled'           => 1,
-    ]
+    ],
 ];

@@ -25,7 +25,7 @@
 
 namespace gradereport_twoa;
 
-use \grade_item;
+use grade_item;
 
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot.'/grade/querylib.php');

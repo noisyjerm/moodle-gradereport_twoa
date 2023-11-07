@@ -36,7 +36,7 @@ class grade_info {
     private $usergrades;
 
     /** @var array $userids             The userids to get grades for. */
-    private $userids = array();
+    private $userids = [];
 
     /**
      * grade_info constructor.
@@ -48,7 +48,7 @@ class grade_info {
         global $DB;
 
         // What library files do we need to include for this to work. These need to be loaded first.
-        $requiredlibraries = array(
+        $requiredlibraries = [
             'grade/querylib.php'    => 'dirroot',
             'gradelib.php'          => 'libdir',
             // Need the grade_item class.
@@ -58,22 +58,22 @@ class grade_info {
             // Need some grade constants also.
             'grade/constants.php'   => 'libdir',
             // Lets load our plugins lib too :).
-            'grade/report/twoa/locallib.php'    => 'dirroot'
-        );
+            'grade/report/twoa/locallib.php'    => 'dirroot',
+        ];
 
         // Load the library files that we said we needed for this to work.
         $this->load_libraries($requiredlibraries);
 
         // Get the grade item.
-        $gradeitem = $DB->get_record('grade_items', array('id' => $gradeitemid));
+        $gradeitem = $DB->get_record('grade_items', ['id' => $gradeitemid]);
 
         // Set the params to construct the grade_item object with.
-        $gradeitemparams = array(
+        $gradeitemparams = [
             'id'            => $gradeitem->id,
             'courseid'      => $courseid,
             'itemtype'      => $gradeitem->itemtype,
-            'categoryid'    => $gradeitem->categoryid
-        );
+            'categoryid'    => $gradeitem->categoryid,
+        ];
 
         // Set the grade item.
         $this->gradeitem = \grade_item::fetch($gradeitemparams);
@@ -113,7 +113,7 @@ class grade_info {
      * @param array $requiredlibraries
      * @return void
      */
-    private function load_libraries($requiredlibraries = array()) {
+    private function load_libraries($requiredlibraries = []) {
         global $CFG;
 
         // Load the files.
@@ -152,7 +152,7 @@ class grade_info {
         $item->gradepass    = $this->gradeitem->gradepass;
         $item->locked       = $this->gradeitem->is_locked();
         $item->hidden       = $this->gradeitem->is_hidden();
-        $item->grades       = array();
+        $item->grades       = [];
 
         switch ($this->gradeitem->gradetype) {
             case GRADE_TYPE_NONE:
@@ -240,7 +240,7 @@ class grade_info {
             // Put the user information in the grade object too.
             $userdetails = $DB->get_record(
                 'user',
-                array('id' => $userid),
+                ['id' => $userid],
                 // We only want the users name and their email. We will also put in their id in case we need it.
                 "id, firstname, lastname, email"
             );

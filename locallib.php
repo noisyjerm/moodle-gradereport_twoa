@@ -62,15 +62,15 @@ function gradereport_twoa_get_enrolled_users($courseid = 0) {
     global $DB;
 
     // An array to hold the user ids in.
-    $userids = array();
+    $userids = [];
 
     // Get the enrolment methods for this course.
-    $courseenrolmentmethods = $DB->get_records('enrol', array('courseid' => $courseid));
+    $courseenrolmentmethods = $DB->get_records('enrol', ['courseid' => $courseid]);
 
     // Grab all the users from all enrolment methods in this course and just put their ids in the array.
     foreach ($courseenrolmentmethods as $courseenrolmentmethod) {
         // If there are enrolments for this enrolment method then add the user ids to the array of userids.
-        if ($userenrolments = $DB->get_records('user_enrolments', array('enrolid' => $courseenrolmentmethod->id))) {
+        if ($userenrolments = $DB->get_records('user_enrolments', ['enrolid' => $courseenrolmentmethod->id])) {
             // There are some enrolments so just add the user id.
             foreach ($userenrolments as $userenrolment) {
                 $userids[] = $userenrolment->userid;

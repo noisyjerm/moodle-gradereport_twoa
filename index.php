@@ -47,10 +47,10 @@ array_walk($namefields, function(&$val) {
 $sqlfields  = 'gg.id, gg.timemodified dategraded, u.id userid, u.email, ' . implode(',', $namefields);
 $sqlfrom    = '{grade_grades} gg JOIN {user} u ON gg.userid = u.id';
 $sqlwhere   = 'gg.itemid = :itemid AND gg.finalgrade IS NOT NULL';
-$sqlparams  = array('itemid' => $itemid);
+$sqlparams  = ['itemid' => $itemid];
 
 // Define the list of columns to show.
-$columns = array('email', 'course', 'grade', 'dategraded', 'action');
+$columns = ['email', 'course', 'grade', 'dategraded', 'action'];
 
 // Define the titles of columns to show in header.
 $headers = [];
@@ -68,29 +68,29 @@ foreach ($optionals as $optional) {
 
 
 // Define the fields that will not be sorted.
-$nosorting = array('course', 'grade', 'action');
+$nosorting = ['course', 'grade', 'action'];
 
-$courseparams = array('id' => $courseid);
+$courseparams = ['id' => $courseid];
 
 // The base url for the report object.
 $reportbaseurl = new \moodle_url(
     "{$CFG->wwwroot}/grade/report/twoa/index.php",
-    array('id' => $courseid, 'itemid' => $itemid)
+    ['id' => $courseid, 'itemid' => $itemid]
 );
 
 // Setup the current page url.
-$pageparams = array(
+$pageparams = [
     'id'                => $courseid,
     'page'              => $page,
     'perpage'           => $perpage,
-    'itemid'            => $itemid
-);
+    'itemid'            => $itemid,
+];
 
 // Set the current page url.
 $currentpageurl = new moodle_url('/grade/report/twoa/index.php', $pageparams);
 
 // Set where the user gets redirected to on error and when downloading.
-$redirectto = new \moodle_url('/grade/report/twoa/index.php', array('id' => $courseid));
+$redirectto = new \moodle_url('/grade/report/twoa/index.php', ['id' => $courseid]);
 
 $PAGE->set_url($currentpageurl);
 $PAGE->set_pagelayout('incourse');
@@ -107,7 +107,7 @@ if (!$course = $DB->get_record('course', $courseparams)) {
         $lastcourseid = key($lastcourse);
 
         // Generate the url to redirect to.
-        $redirectto = new \moodle_url('/grade/report/twoa/index.php', array('id' => $lastcourseid));
+        $redirectto = new \moodle_url('/grade/report/twoa/index.php', ['id' => $lastcourseid]);
 
         // We have found where they came from so lets send them back.
         throw new moodle_exception('nocourseid', 'gradereport_twoa', $redirectto);
@@ -123,7 +123,7 @@ if ($course->id === get_site()->id) {
 
 // Check that the grade item exists. Throw an error if it doesn't.
 if (!empty($itemid)) {
-    if (!$gradeitem = $DB->get_record('grade_items', array('id' => $itemid, 'courseid' => $courseid, 'itemtype' => 'category'))) {
+    if (!$gradeitem = $DB->get_record('grade_items', ['id' => $itemid, 'courseid' => $courseid, 'itemtype' => 'category'])) {
         throw new moodle_exception('nogradeitem', 'gradereport_twoa', $redirectto);
     }
 }
@@ -138,7 +138,7 @@ require_capability('moodle/grade:viewall', $context);
 require_capability('moodle/grade:edit', $context);
 
 $gpr = new grade_plugin_return(
-    array('type' => 'report', 'plugin' => 'twoa', 'courseid' => $courseid)
+   ['type' => 'report', 'plugin' => 'twoa', 'courseid' => $courseid]
 );
 
 // Set the name of the grade item if it isn't set aleady.
@@ -170,7 +170,7 @@ if ($download) {
 
 // Last selected report session tracking.
 if (!isset($USER->grade_last_report)) {
-    $USER->grade_last_report = array();
+    $USER->grade_last_report = [];
 }
 $USER->grade_last_report[$course->id] = 'twoa';
 
@@ -204,7 +204,7 @@ if (empty(gradereport_twoa_get_enrolled_users($course->id))) {
 }
 
 // Get the options that should be put into the drop down menu sorted by their sort order.
-$coursegradeitems = $DB->get_records('grade_items', array('itemtype' => 'category', 'courseid' => $courseid), 'sortorder');
+$coursegradeitems = $DB->get_records('grade_items', ['itemtype' => 'category', 'courseid' => $courseid], 'sortorder');
 
 // If there are no grade items for this course then throw a nice message.
 if (empty($coursegradeitems)) {
@@ -215,7 +215,7 @@ if (empty($coursegradeitems)) {
 foreach ($coursegradeitems as $id => $coursegradeitem) {
     // Get the grade category name using the iteminstance in grade_items to map to an id in the grade_categories table. This is
     // ok to assume that a grade category has a name because it is a required field.
-    $gradecategory = $DB->get_record('grade_categories', array('id' => $coursegradeitem->iteminstance));
+    $gradecategory = $DB->get_record('grade_categories', ['id' => $coursegradeitem->iteminstance]);
 
     // Set the grade report name.
     if (!empty($itemid)) {
@@ -234,10 +234,10 @@ foreach ($coursegradeitems as $id => $coursegradeitem) {
 }
 
 // Set the text for the default select option from the lang string.
-$defaultselectoption = array('' => get_string('selectdefaultoptiontext:categorygradeitem', 'gradereport_twoa'));
+$defaultselectoption = ['' => get_string('selectdefaultoptiontext:categorygradeitem', 'gradereport_twoa')];
 
 // Lets make another url for the select to use with just course id as a query string.
-$singleselecturl = new \moodle_url("{$CFG->wwwroot}/grade/report/twoa/index.php", array('id' => $courseid));
+$singleselecturl = new \moodle_url("{$CFG->wwwroot}/grade/report/twoa/index.php", ['id' => $courseid]);
 
 // Make a cool select that reloads automatically.
 $select = new \single_select($singleselecturl, 'itemid', $selectoptions, '', $defaultselectoption);
@@ -258,7 +258,7 @@ if (!empty($itemid)) {
 }
 
 // Setup the parameters required to use the single select class.
-$selectoptions = array();
+$selectoptions = [];
 
 // Output the cool auto reloading select!
 echo \html_writer::div(
@@ -272,11 +272,11 @@ if (!empty($itemid)) {
 }
 
 $event = \gradereport_twoa\event\grade_report_viewed::create(
-    array(
+    [
         'context'       => $context,
         'courseid'      => $courseid,
         'relateduserid' => $USER->id,
-    )
+    ]
 );
 
 $event->trigger();

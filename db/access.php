@@ -24,16 +24,16 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
-    'gradereport/twoa:view' => array(
+$capabilities = [
+    'gradereport/twoa:view' => [
         'riskbitmask'       => RISK_PERSONAL,
         'captype'           => 'read',
         'contextlevel'      => CONTEXT_COURSE,
-        'archetypes'        => array(
+        'archetypes'        => [
             'student'           => CAP_ALLOW,
             'teacher'           => CAP_ALLOW,
             'editingteacher'    => CAP_ALLOW,
-            'manager'           => CAP_ALLOW
-        )
-    )
-);
+            'manager'           => CAP_ALLOW,
+        ],
+    ],
+];

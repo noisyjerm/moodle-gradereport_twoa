@@ -20,7 +20,7 @@ defined('MOODLE_INTERNAL') || die();
 
 // Load tablelib because this is not autoloaded.
 require_once("{$CFG->libdir}/tablelib.php");
-use \html_writer;
+use html_writer;
 
 /**
  * Class gradereport_twoa_table.
@@ -35,7 +35,7 @@ class table extends \table_sql {
     private $gradeinfo;
 
     /** @var array $excludedexportformats   An array of formats to exclude from the list of available formats to download as. */
-    private $excludedexportformats = array();
+    private $excludedexportformats = [];
 
     /**
      * table constructor.
@@ -67,9 +67,9 @@ class table extends \table_sql {
      */
     public function __construct($uniqueid, $courseid, $itemid, \moodle_url $baseurl,
                                 $sqlfields = '', $sqlfrom = '', $sqlwhere = '', $sqlparams = '',
-                                $columns = array(), $headers = array(), $fieldstonotsort = array(),
+                                $columns = [], $headers = [], $fieldstonotsort = [],
                                 $isdownloadable = true, $iscollapsible = false,
-                                $showbuttonsat = array(TABLE_P_BOTTOM)) {
+                                $showbuttonsat = [TABLE_P_BOTTOM]) {
         global $CFG;
 
         // Set the id of this table.
@@ -222,7 +222,7 @@ class table extends \table_sql {
         $attributes = [
             'type' => 'checkbox',
             'data-gradeid' => $gradeid,
-            'class' => 'gradetransfer'
+            'class' => 'gradetransfer',
         ];
         if (!preg_match($pattern, $idnumber) || $status >= \gradereport_twoa\transfergrade::STATUS_SENT) {
             $attributes['disabled'] = 'disabled';
@@ -232,7 +232,7 @@ class table extends \table_sql {
         }
 
         $out = html_writer::tag('label', 'transferred',
-                array('for' => 'status_' . $value->userid, 'class' => 'accesshide'));
+                ['for' => 'status_' . $value->userid, 'class' => 'accesshide']);
         $out .= html_writer::empty_tag('input', $attributes);
         if ($status == \gradereport_twoa\transfergrade::STATUS_MODIFIED) {
             $out .= html_writer::tag('i', '', [

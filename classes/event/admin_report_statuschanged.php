@@ -24,7 +24,7 @@
 
 namespace gradereport_twoa\event;
 
-use \core\event\base;
+use core\event\base;
 
 /**
  * Admin report gradetransferitem status changed event class.

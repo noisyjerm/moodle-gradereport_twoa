@@ -25,25 +25,30 @@
 
 namespace gradereport_twoa\external;
 
+use core_external\external_api;
+use core_external\external_function_parameters;
+use core_external\external_value;
+use core_external\external_single_structure;
+
 /**
  * Class gradereport_twoa_manualstatus
  */
-class gradereport_twoa_manualstatus extends \external_api {
+class gradereport_twoa_manualstatus extends external_api {
 
     /**
      * Validate incoming parameters
      * @return \external_function_parameters
      */
     public static function update_transferstatus_parameters() {
-        return new \external_function_parameters (
-            array(
-                'id'      => new \external_value(
+        return new external_function_parameters (
+            [
+                'id'      => new external_value(
                     PARAM_INT,
                     'The id of the grade to update',
                     VALUE_REQUIRED,
                     0
                 ),
-            )
+            ]
         );
     }
 
@@ -81,7 +86,7 @@ class gradereport_twoa_manualstatus extends \external_api {
      * @return \external_single_structure
      */
     public static function update_transferstatus_returns() {
-        return new \external_single_structure(['success' => new \external_value(PARAM_BOOL, 'Did this work ok')]);
+        return new external_single_structure(['success' => new external_value(PARAM_BOOL, 'Did this work ok')]);
     }
 
 }

@@ -20,7 +20,7 @@ defined('MOODLE_INTERNAL') || die();
 
 // Load tablelib because this is not autoloaded.
 require_once("{$CFG->libdir}/tablelib.php");
-use \html_writer;
+use html_writer;
 
 /**
  * Class gradereport_twoa_table.
@@ -49,7 +49,7 @@ class report_table extends \table_sql {
         $this->define_baseurl($baseurl);
 
         // Set the columns as per the constructor.
-        $columns = array('tauiraid', 'progcode', 'coursecode', 'classid', 'eventdate', 'grade', 'status');
+        $columns = ['tauiraid', 'progcode', 'coursecode', 'classid', 'eventdate', 'grade', 'status'];
         $this->define_columns($columns);
 
         // Set the column headers as per the constructor.
@@ -69,7 +69,7 @@ class report_table extends \table_sql {
         $this->collapsible(true);
 
         // Lets make the table download button show up where it is defined in the constructor.
-        $this->show_download_buttons_at(array(TABLE_P_BOTTOM));
+        $this->show_download_buttons_at([TABLE_P_BOTTOM]);
 
         // Get the formats that this report can not be exported as from the plugin settings.
         if ($excludedformatexports = get_config('gradereport_twoa', 'excluded_dataformats')) {
@@ -106,7 +106,7 @@ class report_table extends \table_sql {
     }
 
     /** @var array $excludedexportformats   An array of formats to exclude from the list of available formats to download as. */
-    private $excludedexportformats = array();
+    private $excludedexportformats = [];
 
     /**
      * Put the table in a form so we can update items.
@@ -117,7 +117,7 @@ class report_table extends \table_sql {
             'name' => 'updateselected',
             'class' => 'updateselected',
             'action' => $this->baseurl,
-            'method' => 'post'
+            'method' => 'post',
         ]);
     }
 

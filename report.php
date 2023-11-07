@@ -75,14 +75,14 @@ if (isset($setstatuses)) {
     // Log this change.
     if ($setstatus !== null) {
         $event = \gradereport_twoa\event\admin_report_statuschanged::create(
-            array(
+            [
                 'context' => $context,
                 'courseid' => 0,
                 'other' => [
                     'items' => implode(', ', array_values($setstatus)),
                     'status' => get_string('status' . $setstatuses, 'gradereport_twoa'),
                 ],
-            )
+            ]
         );
         $event->trigger();
     }
@@ -115,11 +115,11 @@ if ($dates = $filters->get_data()) {
 // Set the base url.
 $reportbaseurl = new \moodle_url(
     "{$CFG->wwwroot}/grade/report/twoa/report.php",
-    array(
+    [
         'status' => $status,
         'startdate' => $startdate,
-        'enddate' => $enddate
-    )
+        'enddate' => $enddate,
+    ]
 );
 
 // Now let's get the report.
@@ -148,10 +148,10 @@ $filters->display();
 $report->out($perpage, false);
 
 $event = \gradereport_twoa\event\admin_report_viewed::create(
-    array(
+    [
         'context'       => $context,
         'courseid'      => 0,
-    )
+    ]
 );
 $event->trigger();
 

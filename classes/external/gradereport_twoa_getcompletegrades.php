@@ -25,25 +25,31 @@
 
 namespace gradereport_twoa\external;
 
+use core_external\external_api;
+use core_external\external_function_parameters;
+use core_external\external_value;
+use core_external\external_single_structure;
+use core_external\external_multiple_structure;
+
 /**
  * Class gradereport_twoa_getcompletegrades
  */
-class gradereport_twoa_getcompletegrades extends \external_api {
+class gradereport_twoa_getcompletegrades extends external_api {
 
     /**
      * Validate incoming parameters
      * @return \external_function_parameters
      */
     public static function get_completegrades_parameters() {
-        return new \external_function_parameters (
-            array(
-                'range'    => new \external_value(PARAM_ALPHA, 'Keyword to describe the subset of results',
+        return new external_function_parameters (
+            [
+                'range'    => new external_value(PARAM_ALPHA, 'Keyword to describe the subset of results',
                     VALUE_DEFAULT, 'last'),
-                'rangeval' => new \external_value(PARAM_INT, 'Paramter', VALUE_DEFAULT, '86400'),
-                'stealth'  => new \external_value(PARAM_BOOL, 'To mark as sent or not', VALUE_DEFAULT, 0),
-                'limit'    => new \external_value(PARAM_INT, 'Maximum number of records per request', VALUE_DEFAULT, 1000),
-                'lastid'     => new \external_value(PARAM_INT, 'The page number of a paginated request', VALUE_DEFAULT, 0),
-            )
+                'rangeval' => new external_value(PARAM_INT, 'Paramter', VALUE_DEFAULT, '86400'),
+                'stealth'  => new external_value(PARAM_BOOL, 'To mark as sent or not', VALUE_DEFAULT, 0),
+                'limit'    => new external_value(PARAM_INT, 'Maximum number of records per request', VALUE_DEFAULT, 1000),
+                'lastid'     => new external_value(PARAM_INT, 'The page number of a paginated request', VALUE_DEFAULT, 0),
+            ]
         );
     }
 
@@ -139,7 +145,7 @@ class gradereport_twoa_getcompletegrades extends \external_api {
             'size' => $limit,
             'pages' => $pages,
             'lastid' => $lastid,
-            'nextquery' => $nextquery
+            'nextquery' => $nextquery,
         ];
 
         $updates = $DB->start_delegated_transaction();
@@ -178,14 +184,14 @@ class gradereport_twoa_getcompletegrades extends \external_api {
         }
 
         $event = \gradereport_twoa\event\grade_data_retrieved::create(
-            array(
+            [
                 'context'       => \context_system::instance(),
                 'courseid'      => 0,
                 'relateduserid' => 0,
                 'other'         => ['message' =>
-                                        count($results) . ' results successful, ' . count($errors) . ' results skipped.'
+                                        count($results) . ' results successful, ' . count($errors) . ' results skipped.',
                 ],
-            )
+            ]
         );
 
         $event->trigger();
@@ -200,32 +206,32 @@ class gradereport_twoa_getcompletegrades extends \external_api {
 
     /**
      * Describe the returned data structure.
-     * @return \external_single_structure
+     * @return external_single_structure
      */
     public static function get_completegrades_returns() {
 
-        $grade = new \external_single_structure(
-            array(
-                'tauiraid' => new \external_value(PARAM_INT, 'Portion of email address before @ matching student ID from SMS'),
-                'progcode' => new \external_value(PARAM_ALPHANUMEXT, 'ID number of category matching Class code from SMS'),
-                'classid' => new \external_value(PARAM_INT, 'ID number of course matching Class id from SMS'),
-                'coursecode' => new \external_value(PARAM_RAW, 'ID number of category grade item matching Grade code in SMS'),
-                'grade' => new \external_value(PARAM_RAW, 'Grade awarded to the student'),
-                'eventdate' => new \external_value(PARAM_RAW, 'Unix timestamp when grade was last updated'),
-            )
+        $grade = new external_single_structure(
+            [
+                'tauiraid' => new external_value(PARAM_INT, 'Portion of email address before @ matching student ID from SMS'),
+                'progcode' => new external_value(PARAM_ALPHANUMEXT, 'ID number of category matching Class code from SMS'),
+                'classid' => new external_value(PARAM_INT, 'ID number of course matching Class id from SMS'),
+                'coursecode' => new external_value(PARAM_RAW, 'ID number of category grade item matching Grade code in SMS'),
+                'grade' => new external_value(PARAM_RAW, 'Grade awarded to the student'),
+                'eventdate' => new external_value(PARAM_RAW, 'Unix timestamp when grade was last updated'),
+            ]
         );
 
-        $pagination = array(
-                'size' => new \external_value(PARAM_INT, 'The number of records'),
-                'pages' => new \external_value(PARAM_INT, 'The number pages of results for this query'),
-                'lastid' => new \external_value(PARAM_INT, 'The id number of the last record in this set'),
-                'nextquery' => new \external_value(PARAM_RAW, 'Query string with params and values for the next \'page\''),
-        );
+        $pagination = [
+                'size' => new external_value(PARAM_INT, 'The number of records'),
+                'pages' => new external_value(PARAM_INT, 'The number pages of results for this query'),
+                'lastid' => new external_value(PARAM_INT, 'The id number of the last record in this set'),
+                'nextquery' => new external_value(PARAM_RAW, 'Query string with params and values for the next \'page\''),
+        ];
 
-        return new \external_single_structure([
-            'grades' => new \external_multiple_structure($grade, 'List of grades'),
-            'errors' => new \external_value(PARAM_RAW, 'Notes of errors', VALUE_OPTIONAL, 'None'),
-            'pagination' => new \external_single_structure($pagination, 'Details of pagination', VALUE_OPTIONAL, 'None'),
+        return new external_single_structure([
+            'grades' => new external_multiple_structure($grade, 'List of grades'),
+            'errors' => new external_value(PARAM_RAW, 'Notes of errors', VALUE_OPTIONAL, 'None'),
+            'pagination' => new external_single_structure($pagination, 'Details of pagination', VALUE_OPTIONAL, 'None'),
         ]);
     }
 
