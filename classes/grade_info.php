@@ -189,6 +189,7 @@ class grade_info {
             // Added these properties to the object for this class.
             $grade->timemodified    = $gradegrades[$userid]->get_dategraded();
             $grade->timecreated     = $gradegrades[$userid]->timecreated;
+            $grade->passed          = $grade->finalgrade >= $this->gradeitem->gradepass;
 
             // This is what was the default.
             $grade->locked          = $gradegrades[$userid]->is_locked();

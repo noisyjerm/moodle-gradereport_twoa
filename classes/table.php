@@ -218,14 +218,18 @@ class table extends \table_sql {
         $status = $this->gradeinfo->get_user_grade_info($value->userid, 'transferstatus');
         $gradeid = $this->gradeinfo->get_user_grade_info($value->userid, 'gradeid');
         $pattern = \gradereport_twoa\transfergrade::GRADECAT_PATTERN;
+        $passed  = $this->gradeinfo->get_user_grade_info($value->userid, 'passed');
 
         $attributes = [
             'type' => 'checkbox',
             'data-gradeid' => $gradeid,
             'class' => 'gradetransfer',
+            'data-passed' => $passed,
         ];
-        if (!preg_match($pattern, $idnumber) || $status >= \gradereport_twoa\transfergrade::STATUS_SENT) {
-            $attributes['disabled'] = 'disabled';
+        if (!preg_match($pattern, $idnumber)
+            || $status >= \gradereport_twoa\transfergrade::STATUS_SENT
+            || !$passed) {
+                $attributes['disabled'] = 'disabled';
         }
         if ($status >= 1) {
             $attributes['checked'] = true;

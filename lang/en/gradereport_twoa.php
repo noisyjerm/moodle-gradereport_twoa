@@ -80,6 +80,9 @@ $string['settings:excluded_dataformats/checkbox_description']   =
 $string['settings:optional_columns/checkbox_heading']       = 'Additional columns';
 $string['settings:optional_columns/checkbox_description']   =
     'Select any extra columns you would like included.';
+// Dialogue words.
+$string['dialog:title'] = 'Grade is YTA';
+$string['dialog:body'] = 'Only grades that have been achieved will be transferred.';
 
 // Strings for Admin report settings.
 $string['settings:adminreport/adminreport_description']     = 'Options for the Admin report';

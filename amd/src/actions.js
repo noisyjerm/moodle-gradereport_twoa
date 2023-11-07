@@ -24,6 +24,9 @@
 
 import * as Ajax from 'core/ajax';
 import Notification from 'core/notification';
+import * as ModalFactory from "core/modal_factory";
+import * as ModalEvents from "core/modal_events";
+import * as Str from "core/str";
 
 /**
  * Initialize module
@@ -35,15 +38,37 @@ export const init = () => {
 const updateStatus = (evt) => {
     let el = evt.target;
     let gradeid = el.dataset.gradeid;
+    let ispassed = el.dataset.passed;
     // Disable the element.
     el.disabled = 'disabled';
-    Ajax.call([{
-        methodname: 'gradereport_twoa_manualstatus',
-        args: {'id': gradeid},
-        done: function() {
-            // Enable the element
-            el.disabled = false;
-        },
-        fail: Notification.exception
-    }]);
+    let titlewords = Str.get_string("dialog:title", "gradereport_twoa");
+    let bodywords = Str.get_string("dialog:body", "gradereport_twoa");
+
+    // Warn a YTA cannot be set to ready.
+    if (ispassed === "0" && el.checked) {
+        ModalFactory.create({
+            type: ModalFactory.types.ALERT,
+            body: bodywords,
+            title: titlewords,
+            removeOnClose: true
+        }).then(function(modal) {
+            modal.getRoot().on(ModalEvents.hidden, function() {
+                el.disabled = false;
+                el.checked = false;
+                modal.destroy();
+            });
+            modal.show();
+            return true;
+        }).catch(Notification.exception);
+    } else {
+        Ajax.call([{
+            methodname: 'gradereport_twoa_manualstatus',
+            args: {'id': gradeid},
+            done: function() {
+                // Enable the element
+                el.disabled = false;
+            },
+            fail: Notification.exception
+        }]);
+    }
 };
