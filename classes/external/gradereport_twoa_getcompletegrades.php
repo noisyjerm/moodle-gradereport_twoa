@@ -64,7 +64,7 @@ class gradereport_twoa_getcompletegrades extends external_api {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public static function get_completegrades($range = 'last', $rangeval = 86400, $stealth=0, $limit=1000, $lastid=0) {
+    public static function get_completegrades($range = 'new', $rangeval = 86400, $stealth=0, $limit=1000, $lastid=0) {
         global $DB;
         $errors = [];
 
