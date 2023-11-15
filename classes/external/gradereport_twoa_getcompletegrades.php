@@ -44,7 +44,7 @@ class gradereport_twoa_getcompletegrades extends external_api {
         return new external_function_parameters (
             [
                 'range'    => new external_value(PARAM_ALPHA, 'Keyword to describe the subset of results',
-                    VALUE_DEFAULT, 'last'),
+                    VALUE_DEFAULT, 'new'),
                 'rangeval' => new external_value(PARAM_INT, 'Paramter', VALUE_DEFAULT, '86400'),
                 'stealth'  => new external_value(PARAM_BOOL, 'To mark as sent or not', VALUE_DEFAULT, 0),
                 'limit'    => new external_value(PARAM_INT, 'Maximum number of records per request', VALUE_DEFAULT, 1000),
